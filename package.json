@@ -32,7 +32,8 @@
   "homepage": "https://github.com/avnendv/blog_api#readme",
   "dependencies": {
     "@babel/runtime": "^7.23.1",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "mongoose": "^7.5.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.23.0",
