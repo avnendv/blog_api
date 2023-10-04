@@ -8,7 +8,7 @@ const UserService = {
     return successResponse(user.toAuthJSON());
   },
   async login({ email, password }) {
-    const msg = 'Tài khoản hoặc mật khẩu không chính xác';
+    const msg = 'Username or password is incorrect';
 
     const user = await User.findOne({ email });
     if (!user) throw { msg };
