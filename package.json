@@ -1,7 +1,8 @@
 {
-  "name": "nodejs_express_basic_structure",
+  "name": "blog_api",
   "version": "1.0.0",
-  "description": "NodeJS + Express Structure Basic",
+  "private": true,
+  "description": "Blog Api App",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -16,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/avnendv/nodejs_express_basic_structure.git"
+    "url": "git+https://github.com/avnendv/blog_api.git"
   },
   "keywords": [
     "nodejs",
@@ -26,9 +27,9 @@
   "author": "AVNENDV",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/avnendv/nodejs_express_basic_structure/issues"
+    "url": "https://github.com/avnendv/blog_api/issues"
   },
-  "homepage": "https://github.com/avnendv/nodejs_express_basic_structure#readme",
+  "homepage": "https://github.com/avnendv/blog_api#readme",
   "dependencies": {
     "@babel/runtime": "^7.23.1",
     "express": "^4.18.2"
