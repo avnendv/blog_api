@@ -56,7 +56,9 @@
     "morgan": "^1.10.0",
     "nodemon": "^3.0.1",
     "prettier": "^3.0.3",
-    "swagger-ui-express": "^5.0.0"
+    "swagger-ui-express": "^5.0.0",
+    "winston": "^3.10.0",
+    "winston-daily-rotate-file": "^4.7.1"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
