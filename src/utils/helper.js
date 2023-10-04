@@ -1,10 +1,20 @@
+import { RESULT_FAIL, RESULT_OK } from '@/config/constants';
+
 export const errorResponse = (error) => {
   const errorResponseData = {
-    result: 0,
+    result: RESULT_FAIL,
     isLogger: true,
     msg: 'Server error!',
   };
   return { ...errorResponseData, ...error };
+};
+
+export const successResponse = (data) => {
+  const responseData = {
+    result: RESULT_OK,
+    data,
+  };
+  return responseData;
 };
 
 /** slug generator */

@@ -8,6 +8,7 @@ const isDEV = NODE_ENV === 'development';
 export async function connect() {
   try {
     const options = {
+      dbName: 'blog-db',
       minPoolSize: 10,
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -16,7 +17,7 @@ export async function connect() {
     };
     mongoose.set('strictQuery', false);
     const response = await mongoose.connect(MONGO_URL, options);
-    console.log('connect successfully!');
+    console.log('DB::: connect successfully!');
 
     if (isDEV) {
       const models = mongoose.models;
@@ -25,16 +26,16 @@ export async function connect() {
           const model = models[modelName];
           try {
             await model.syncIndexes();
-            console.log(`Sync indexes for model ${modelName}`);
+            console.log(`DB::: Sync indexes for model ${modelName}`);
           } catch (err) {
-            console.error(`Error when sync indexes for model ${modelName}:`, err);
+            console.error(`DB::: Error when sync indexes for model ${modelName}:`, err);
           }
         })
       );
     }
     return response;
   } catch (e) {
-    console.log('connect failure!');
+    console.log('DB::: connect failure!');
     process.exit(1);
   }
 }

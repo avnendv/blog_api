@@ -1,6 +1,6 @@
 import express from 'express';
-import { setupApp } from './plugins';
-import { PORT } from './config/env';
+import { setupApp } from '@/plugins';
+import { PORT } from '@/config/env';
 import { connect } from '@/config/database';
 
 const app = express();

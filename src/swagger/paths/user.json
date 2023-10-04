@@ -13,24 +13,6 @@
             }
           }
         }
-      },
-      "responses": {
-        "200": {
-          "description": "Success",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserResponse"
-              }
-            }
-          }
-        },
-        "400": {
-          "description": "Bad request"
-        },
-        "409": {
-          "description": "Conflict"
-        }
       }
     }
   },
@@ -53,24 +35,6 @@
             }
           }
         }
-      },
-      "responses": {
-        "200": {
-          "description": "Success",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserResponse"
-              }
-            }
-          }
-        },
-        "400": {
-          "description": "Bad request"
-        },
-        "409": {
-          "description": "Conflict"
-        }
       }
     }
   },
@@ -78,12 +42,7 @@
     "get": {
       "tags": ["User"],
       "summary": "Get a user with check info",
-      "description": "Response information user",
-      "responses": {
-        "200": {
-          "description": "User existing"
-        }
-      }
+      "description": "Response information user"
     }
   }
 }
