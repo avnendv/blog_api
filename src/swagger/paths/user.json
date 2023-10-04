@@ -1,0 +1,89 @@
+{
+  "/register": {
+    "post": {
+      "tags": ["User"],
+      "summary": "Register a user",
+      "description": "Register a user",
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Register"
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserResponse"
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad request"
+        },
+        "409": {
+          "description": "Conflict"
+        }
+      }
+    }
+  },
+  "/login": {
+    "post": {
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "tags": ["User"],
+      "summary": "Login User",
+      "description": "Login User",
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Login"
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserResponse"
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad request"
+        },
+        "409": {
+          "description": "Conflict"
+        }
+      }
+    }
+  },
+  "/profile": {
+    "get": {
+      "tags": ["User"],
+      "summary": "Get a user with check info",
+      "description": "Response information user",
+      "responses": {
+        "200": {
+          "description": "User existing"
+        }
+      }
+    }
+  }
+}

@@ -1,4 +1,5 @@
 import { setupLibs } from './lib';
+import swagger from '@/swagger';
 import router from '@/routes';
 
 export const setupApp = (app) => {
@@ -7,4 +8,7 @@ export const setupApp = (app) => {
 
   // register routes
   router(app);
+
+  // register swagger
+  swagger(app);
 };

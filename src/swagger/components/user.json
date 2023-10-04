@@ -1,0 +1,102 @@
+{
+  "Register": {
+    "type": "object",
+    "required": ["email", "user_name", "password", "full_name"],
+    "properties": {
+      "email": {
+        "type": "string",
+        "default": "avnendv@gmail.com"
+      },
+      "user_name": {
+        "type": "string",
+        "default": "AVNENDV"
+      },
+      "full_name": {
+        "type": "string",
+        "default": "AVNENDV"
+      },
+      "password": {
+        "type": "string",
+        "default": "avnendv123"
+      },
+      "birthday": {
+        "type": "string",
+        "default": "16/11/2000"
+      },
+      "gender": {
+        "type": "string",
+        "default": "male",
+        "enum": ["female", "male"]
+      },
+      "phone": {
+        "type": "string",
+        "default": "0124334124"
+      },
+      "address": {
+        "type": "string",
+        "default": "Nam Định"
+      }
+    }
+  },
+  "Login": {
+    "type": "object",
+    "required": ["email", "password"],
+    "properties": {
+      "email": {
+        "type": "string",
+        "default": "avnendv@gmail.com"
+      },
+      "password": {
+        "type": "string",
+        "default": "avnendv123"
+      }
+    }
+  },
+  "UserResponse": {
+    "type": "object",
+    "properties": {
+      "result": {
+        "type": "number",
+        "example": 1
+      },
+      "data": {
+        "type": "object",
+        "properties": {
+          "user_name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "full_name": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "gender": {
+            "type": "string"
+          },
+          "birthday": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "expired_status": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "FormActor": {
+    "type": "object",
+    "required": ["name"],
+    "properties": {
+      "name": {
+        "type": "string",
+        "default": "AVNENDV"
+      },
+      "birthday": {
+        "type": "string",
+        "default": "16/11/2000"
+      },
+      "gender": {
+        "type": "string",
+        "default": "male",
+        "enum": ["female", "male"]
+      },
+      "descriptions": {
+        "type": "string",
+        "default": "descriptions"
+      },
+      "address": {
+        "type": "string",
+        "default": "Nam Định"
+      }
+    }
+  },
+  "ActorResponse": {
+    "type": "object",
+    "properties": {
+      "result": {
+        "type": "number",
+        "example": 1
+      },
+      "data": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "gender": {
+            "type": "string"
+          },
+          "birthday": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "descriptions": {
+            "type": "string"
+          },
+          "viewer": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          },
+          "deleted_at": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
