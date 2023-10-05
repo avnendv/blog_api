@@ -8,6 +8,9 @@ const Tag = new Schema({
     required: true,
     trim: true,
   },
+  description: {
+    type: String,
+  },
   isShowTop: {
     type: Boolean,
     default: false,
