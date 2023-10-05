@@ -1,9 +1,9 @@
 import user from './user.json';
-import actor from './actor.json';
+import tag from './tag.json';
 
 const schemas = {
   ...user,
-  ...actor,
+  ...tag,
 };
 
 export default {
@@ -44,16 +44,6 @@ export default {
       },
       IllegalInput: {
         description: 'Illegal input for operation.',
-      },
-      GeneralError: {
-        description: 'General Error',
-        content: {
-          'application/json': {
-            schema: {
-              $ref: '#/components/schemas/GeneralError',
-            },
-          },
-        },
       },
     },
   },

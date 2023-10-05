@@ -9,7 +9,7 @@ export const errorResponse = (error) => {
   return { ...errorResponseData, ...error };
 };
 
-export const successResponse = (data) => {
+export const successResponse = (data = {}) => {
   const responseData = {
     result: RESULT_OK,
     data,

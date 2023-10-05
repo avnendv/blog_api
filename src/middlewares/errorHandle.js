@@ -9,7 +9,7 @@ export const errorHandle = (err, _req, res, _next) => {
   if (message?.includes('ValidationError')) msg = message;
   if (message?.includes('E11000')) msg = 'Field exists!';
 
-  const error = errorResponse({ message, msg: err.msg ?? msg });
+  const error = errorResponse({ message, msg: err.msg ?? msg ?? 'Has some error! Please check your data' });
   const { isLogger, ...errorData } = error;
 
   isLogger && logger.error(JSON.stringify(error));

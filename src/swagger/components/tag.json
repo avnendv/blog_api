@@ -1,0 +1,44 @@
+{
+  "TagStore": {
+    "type": "object",
+    "required": ["name"],
+    "properties": {
+      "name": {
+        "type": "string",
+        "default": "tag"
+      },
+      "description": {
+        "type": "string"
+      },
+      "isShowTop": {
+        "type": "boolean",
+        "default": false
+      },
+      "status": {
+        "type": "number",
+        "default": 1
+      }
+    }
+  },
+  "TagUpdate": {
+    "type": "object",
+    "required": ["name"],
+    "properties": {
+      "name": {
+        "type": "string",
+        "default": "tag"
+      },
+      "description": {
+        "type": "string"
+      },
+      "isShowTop": {
+        "type": "boolean",
+        "default": false
+      },
+      "status": {
+        "type": "number",
+        "default": 1
+      }
+    }
+  }
+}

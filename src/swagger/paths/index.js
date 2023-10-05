@@ -1,7 +1,7 @@
 import user from './user.json';
-import actor from './actor.json';
+import tag from './tag.json';
 
-const paths = { ...user, ...actor };
+const paths = { ...user, ...tag };
 
 export default {
   paths,

@@ -1,0 +1,89 @@
+{
+  "/tag": {
+    "get": {
+      "tags": ["Tag"],
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "summary": "List Tag",
+      "description": "List Tag",
+      "responses": {}
+    },
+    "post": {
+      "tags": ["Tag"],
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "summary": "Store Tag",
+      "description": "Store Tag",
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/TagStore"
+            }
+          }
+        }
+      },
+      "responses": {}
+    }
+  },
+  "/tag/{name}": {
+    "put": {
+      "tags": ["Tag"],
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "summary": "Update Tag",
+      "description": "Update Tag",
+      "parameters": [
+        {
+          "in": "path",
+          "name": "name",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/TagUpdate"
+            }
+          }
+        }
+      },
+      "responses": {}
+    },
+    "delete": {
+      "tags": ["Tag"],
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "summary": "Delete a tag by name",
+      "parameters": [
+        {
+          "in": "path",
+          "name": "name",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "responses": {}
+    }
+  }
+}

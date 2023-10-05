@@ -22,4 +22,13 @@ const Tag = new Schema({
   },
 });
 
+Tag.methods.toResource = function () {
+  return {
+    name: this.name,
+    description: this.description,
+    isShowTop: this.isShowTop,
+    status: this.status,
+  };
+};
+
 export default model('tag', Tag);

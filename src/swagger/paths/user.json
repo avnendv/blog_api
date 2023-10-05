@@ -13,7 +13,8 @@
             }
           }
         }
-      }
+      },
+      "responses": {}
     }
   },
   "/login": {
@@ -35,14 +36,16 @@
             }
           }
         }
-      }
+      },
+      "responses": {}
     }
   },
   "/profile": {
     "get": {
       "tags": ["User"],
       "summary": "Get a user with check info",
-      "description": "Response information user"
+      "description": "Response information user",
+      "responses": {}
     }
   }
 }
