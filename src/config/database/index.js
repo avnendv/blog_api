@@ -22,14 +22,12 @@ export async function connect() {
     if (isDEV) {
       const models = mongoose.models;
       await Promise.all(
-        Object.keys(models).map(async (modelName) => {
+        Object.keys(models).map((modelName) => {
           const model = models[modelName];
-          try {
-            await model.syncIndexes();
-            console.log(`DB::: Sync indexes for model ${modelName}`);
-          } catch (err) {
-            console.error(`DB::: Error when sync indexes for model ${modelName}:`, err);
-          }
+          model
+            .syncIndexes()
+            .then(() => console.log(`DB::: Sync indexes for model ${modelName}`))
+            .catch((err) => console.error(`DB::: Error when sync indexes for model ${modelName}:`, err));
         })
       );
     }

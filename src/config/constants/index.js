@@ -8,6 +8,21 @@ export const STATUS = {
   ENABLE: 1,
 };
 
+export const PUBLISH = {
+  DRAFT: 0,
+  PUBLISHED: 1,
+};
+
+export const VOTE = {
+  DISLIKE: 0,
+  LIKE: 1,
+};
+
+export const POST_TYPE = {
+  POST: 1,
+  SERIES: 2,
+};
+
 export const GENDER = {
   FEMALE: 0,
   MALE: 1,

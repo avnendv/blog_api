@@ -2,7 +2,7 @@ import { loginRequest, registerRequest } from '@/models/requests/User';
 import UserService from '@/services/User';
 
 const UserController = {
-  register: async (req, res, next) => {
+  async register(req, res, next) {
     try {
       const { error } = registerRequest(req.body);
       if (error) throw { msg: error.details[0].message };
@@ -13,7 +13,7 @@ const UserController = {
       next(error);
     }
   },
-  login: async (req, res, next) => {
+  async login(req, res, next) {
     try {
       const { error } = loginRequest(req.body);
       if (error) throw { msg: error.details[0].message };
