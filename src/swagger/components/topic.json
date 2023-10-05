@@ -1,11 +1,18 @@
 {
-  "TagStore": {
+  "TopicStore": {
     "type": "object",
-    "required": ["name"],
+    "required": ["title"],
     "properties": {
-      "name": {
+      "title": {
         "type": "string",
-        "default": "tag"
+        "default": "topic"
+      },
+      "slug": {
+        "type": "string",
+        "default": "topic"
+      },
+      "thumbnail": {
+        "type": "string"
       },
       "description": {
         "type": "string"
@@ -20,12 +27,19 @@
       }
     }
   },
-  "TagUpdate": {
+  "TopicUpdate": {
     "type": "object",
     "properties": {
-      "name": {
+      "title": {
         "type": "string",
-        "default": "tag"
+        "default": "topic"
+      },
+      "slug": {
+        "type": "string",
+        "default": "topic"
+      },
+      "thumbnail": {
+        "type": "string"
       },
       "description": {
         "type": "string"

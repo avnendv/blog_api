@@ -1,0 +1,89 @@
+{
+  "/topic": {
+    "get": {
+      "tags": ["Topic"],
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "summary": "List Topic",
+      "description": "List Topic",
+      "responses": {}
+    },
+    "post": {
+      "tags": ["Topic"],
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "summary": "Store Topic",
+      "description": "Store Topic",
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/TopicStore"
+            }
+          }
+        }
+      },
+      "responses": {}
+    }
+  },
+  "/topic/{id}": {
+    "put": {
+      "tags": ["Topic"],
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "summary": "Update Topic",
+      "description": "Update Topic",
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/TopicUpdate"
+            }
+          }
+        }
+      },
+      "responses": {}
+    },
+    "delete": {
+      "tags": ["Topic"],
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "summary": "Delete a topic by name",
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "responses": {}
+    }
+  }
+}

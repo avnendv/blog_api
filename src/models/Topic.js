@@ -11,7 +11,6 @@ const Topic = new Schema({
   slug: {
     type: String,
     unique: true,
-    required: true,
     trim: true,
   },
   isShowTop: {
@@ -26,5 +25,16 @@ const Topic = new Schema({
     default: 1,
   },
 });
+
+Topic.methods.toResource = function () {
+  return {
+    name: this.name,
+    slug: this.slug,
+    thumbnail: this.thumbnail,
+    description: this.description,
+    isShowTop: this.isShowTop,
+    status: this.status,
+  };
+};
 
 export default model('topic', Topic);

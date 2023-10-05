@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { POST_TYPE, PUBLISH, STATUS } from '@/config/constants';
+import { slugify } from '@/utils';
 
 const Post = new Schema({
   title: {
@@ -40,11 +41,24 @@ const Post = new Schema({
     k: String,
     v: String,
   },
+  tag: [{ type: String, ref: 'tag', field: 'name' }],
+  topic: { type: Schema.Types.ObjectId, ref: 'topic', required: true },
   status: {
     type: Number,
     enum: Object.values(STATUS),
     default: 1,
   },
+});
+
+Post.pre('save', function (next) {
+  try {
+    if (this.slug) next();
+
+    this.slug = slugify(this.title);
+    next();
+  } catch (error) {
+    next(error);
+  }
 });
 
 Post.index({ title: 1 });
