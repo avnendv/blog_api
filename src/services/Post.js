@@ -67,13 +67,23 @@ const PostService = {
   },
   async destroy(id) {
     const data = await Post.findByIdAndRemove(id);
-    console.log(data, 222);
     if (!data)
       throw {
         msg: 'Data not found!',
       };
 
     return successResponse();
+  },
+  async upView(id) {
+    const post = await Post.findByIdAndUpdate(
+      id,
+      {
+        $inc: { viewed: 1 },
+      },
+      { new: true }
+    );
+
+    return !!post;
   },
 };
 

@@ -75,5 +75,24 @@
         "default": 1
       }
     }
+  },
+  "PostMark": {
+    "type": "object",
+    "properties": {
+      "mark": {
+        "type": "boolean",
+        "default": true
+      }
+    }
+  },
+  "PostVote": {
+    "type": "object",
+    "properties": {
+      "vote": {
+        "type": "number",
+        "enum": [0, 1],
+        "default": 1
+      }
+    }
   }
 }

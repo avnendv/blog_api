@@ -67,7 +67,7 @@ const User = new Schema(
 User.pre('save', async function (next) {
   try {
     if (this.authType !== 'local') next();
-    console.log(this.authType);
+
     // Generate a salt
     const salt = await bcrypt.genSalt(10);
     // Generate a password hash (salt + hash)

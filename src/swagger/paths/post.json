@@ -85,5 +85,71 @@
       ],
       "responses": {}
     }
+  },
+  "/post/{id}/mark": {
+    "patch": {
+      "tags": ["Post"],
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "summary": "Mark Post",
+      "description": "Mark Post",
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/PostMark"
+            }
+          }
+        }
+      },
+      "responses": {}
+    }
+  },
+  "/post/{id}/vote": {
+    "patch": {
+      "tags": ["Post"],
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "summary": "Vote Post",
+      "description": "Vote Post",
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/PostVote"
+            }
+          }
+        }
+      },
+      "responses": {}
+    }
   }
 }

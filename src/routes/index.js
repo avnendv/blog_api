@@ -2,15 +2,14 @@ import userRoute from './user';
 import tagRoute from './tag';
 import topicRoute from './topic';
 import postRoute from './post';
-import { HelloWorld } from '@/controllers';
+import HelloWorldController from '@/controllers/HelloWorldController';
 
 import { errorHandle } from '@/middlewares';
 
 const router = (app) => {
   const v1Prefix = '/api/v1';
 
-  // say hello world
-  app.get('/', HelloWorld);
+  app.get('/', HelloWorldController);
 
   app.use(`${v1Prefix}`, userRoute);
   app.use(`${v1Prefix}`, tagRoute);

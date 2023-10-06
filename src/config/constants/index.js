@@ -14,6 +14,7 @@ export const PUBLISH = {
 };
 
 export const VOTE = {
+  NO_VOTE: -1,
   DISLIKE: 0,
   LIKE: 1,
 };
