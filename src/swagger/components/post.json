@@ -1,0 +1,79 @@
+{
+  "PostStore": {
+    "type": "object",
+    "required": ["title"],
+    "properties": {
+      "title": {
+        "type": "string",
+        "default": "post"
+      },
+      "slug": {
+        "type": "string",
+        "default": "post"
+      },
+      "thumbnail": {
+        "type": "string"
+      },
+      "description": {
+        "type": "string"
+      },
+      "content": {
+        "type": "string"
+      },
+      "topic": {
+        "type": "string",
+        "default": "651f5c7202fe1241163e5d32"
+      },
+      "tag": {
+        "type": "array",
+        "default": ["ll", "QA", "io"]
+      },
+      "isShowTop": {
+        "type": "boolean",
+        "default": false
+      },
+      "status": {
+        "type": "number",
+        "default": 1
+      }
+    }
+  },
+  "PostUpdate": {
+    "type": "object",
+    "properties": {
+      "title": {
+        "type": "string",
+        "default": "post update"
+      },
+      "slug": {
+        "type": "string",
+        "default": "post update"
+      },
+      "thumbnail": {
+        "type": "string"
+      },
+      "description": {
+        "type": "string"
+      },
+      "content": {
+        "type": "string"
+      },
+      "topic": {
+        "type": "string",
+        "default": "651f5c7202fe1241163e5d32"
+      },
+      "tag": {
+        "type": "array",
+        "default": ["LIVE", "QA", "TEST", "AA"]
+      },
+      "isShowTop": {
+        "type": "boolean",
+        "default": false
+      },
+      "status": {
+        "type": "number",
+        "default": 1
+      }
+    }
+  }
+}

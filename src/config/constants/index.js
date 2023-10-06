@@ -21,6 +21,7 @@ export const VOTE = {
 export const POST_TYPE = {
   POST: 1,
   SERIES: 2,
+  POST_SERIES: 3,
 };
 
 export const GENDER = {

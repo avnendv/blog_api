@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+import Post from './Post';
 import { STATUS } from '@/config/constants';
 
 const Tag = new Schema({
@@ -20,6 +21,31 @@ const Tag = new Schema({
     enum: Object.values(STATUS),
     default: 1,
   },
+  post: [{ type: Schema.Types.ObjectId, ref: 'post' }],
+});
+
+Tag.pre('save', function (next) {
+  // remove tags from tutorial:
+  this.model('post')
+    .updateMany({ _id: { $nin: this.post } }, { $pull: { tag: this.name } })
+    .exec();
+
+  // add tags to tutorial:
+  this.model('post')
+    .updateMany({ _id: { $in: this.post } }, { $addToSet: { tag: this.name } })
+    .exec();
+
+  next();
+});
+
+Tag.pre('findOneAndRemove', async function (next) {
+  try {
+    await Post.updateMany({ tag: this._conditions._id }, { $pull: { tag: this._conditions._id } }, { multi: true });
+
+    next();
+  } catch (error) {
+    next(error);
+  }
 });
 
 Tag.methods.toResource = function () {

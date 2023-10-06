@@ -3,7 +3,7 @@ import Joi from 'joi';
 const obj = {
   description: Joi.string(),
   isShowTop: Joi.boolean(),
-  status: Joi.number(),
+  status: Joi.number().integer(),
 };
 
 export const storeRequest = (data) => {

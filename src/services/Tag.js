@@ -31,6 +31,20 @@ const TagService = {
 
     return successResponse();
   },
+
+  async insertOnNotExists(data, session) {
+    if (data && Array.isArray(data)) {
+      if (data.length) {
+        const tags = [];
+        for (let index = 0; index < data.length; index++) {
+          const tagName = data[index];
+          const tag = await Tag.exists({ name: tagName });
+          !!tag || tags.push({ name: tagName });
+        }
+        !!tags.length && (await Tag.insertMany(tags, { session }));
+      }
+    }
+  },
 };
 
 export default TagService;

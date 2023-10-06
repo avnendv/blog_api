@@ -12,10 +12,10 @@ export const registerRequest = (data) => {
     fullName: Joi.string().trim().max(225).required(),
     birthday: Joi.date().allow(null, ''),
     avatar: Joi.string().allow(null, ''),
-    gender: Joi.number().allow(null),
+    gender: Joi.number().allow(null).integer(),
     phone: Joi.string().trim().max(12).allow(null, ''),
     address: Joi.string().trim().allow(null, ''),
-    status: Joi.number(),
+    status: Joi.number().integer(),
   });
 
   return rule.validate(data);

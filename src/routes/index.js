@@ -1,6 +1,7 @@
 import userRoute from './user';
 import tagRoute from './tag';
 import topicRoute from './topic';
+import postRoute from './post';
 import { HelloWorld } from '@/controllers';
 
 import { errorHandle } from '@/middlewares';
@@ -14,6 +15,7 @@ const router = (app) => {
   app.use(`${v1Prefix}`, userRoute);
   app.use(`${v1Prefix}`, tagRoute);
   app.use(`${v1Prefix}`, topicRoute);
+  app.use(`${v1Prefix}`, postRoute);
 
   // handle errors
   app.use(errorHandle);

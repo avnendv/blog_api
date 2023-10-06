@@ -1,0 +1,89 @@
+{
+  "/post": {
+    "get": {
+      "tags": ["Post"],
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "summary": "List Post",
+      "description": "List Post",
+      "responses": {}
+    },
+    "post": {
+      "tags": ["Post"],
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "summary": "Store Post",
+      "description": "Store Post",
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/PostStore"
+            }
+          }
+        }
+      },
+      "responses": {}
+    }
+  },
+  "/post/{id}": {
+    "put": {
+      "tags": ["Post"],
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "summary": "Update Post",
+      "description": "Update Post",
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/PostUpdate"
+            }
+          }
+        }
+      },
+      "responses": {}
+    },
+    "delete": {
+      "tags": ["Post"],
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "summary": "Delete a post by id",
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "responses": {}
+    }
+  }
+}

@@ -6,8 +6,8 @@ export const errorHandle = (err, _req, res, _next) => {
   const message = err?.toString() ?? '';
   let msg;
 
-  if (message?.includes('ValidationError')) msg = message;
-  if (message?.includes('E11000')) msg = 'Field exists!';
+  if (message?.includes('ValidationError')) msg = 'ValidationError';
+  if (message?.includes('E11000')) msg = 'E11000';
 
   const error = errorResponse({ message, msg: err.msg ?? msg ?? 'Has some error! Please check your data' });
   const { isLogger, ...errorData } = error;

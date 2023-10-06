@@ -3,24 +3,24 @@ import { successResponse } from '@/utils';
 
 const TopicService = {
   async list(data) {
-    const tags = await Topic.find(data).sort({ isShowTop: -1 }).select('title slug thumbnail description status');
+    const topics = await Topic.find(data).sort({ isShowTop: -1 }).select('title slug thumbnail description status');
 
-    return successResponse(tags);
+    return successResponse(topics);
   },
   async store(data) {
-    const tag = await Topic.create(data);
+    const topic = await Topic.create(data);
 
-    return successResponse(tag.toResource());
+    return successResponse(topic.toResource());
   },
   async update({ id, ...data }) {
-    const tag = await Topic.findByIdAndUpdate(id, data, { new: true });
+    const topic = await Topic.findByIdAndUpdate(id, data, { new: true });
 
-    if (!tag)
+    if (!topic)
       throw {
         msg: 'Data not found!',
       };
 
-    return successResponse(tag.toResource());
+    return successResponse(topic.toResource());
   },
   async destroy(id) {
     const data = await Topic.findByIdAndRemove(id);

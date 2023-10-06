@@ -28,7 +28,7 @@ const Topic = new Schema({
 
 Topic.methods.toResource = function () {
   return {
-    name: this.name,
+    title: this.title,
     slug: this.slug,
     thumbnail: this.thumbnail,
     description: this.description,
