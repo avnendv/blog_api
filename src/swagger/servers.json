@@ -1,8 +1,12 @@
 {
   "servers": [
     {
+      "url": "/api/v1/admin",
+      "description": "Common API server for server"
+    },
+    {
       "url": "/api/v1",
-      "description": "Common API server"
+      "description": "Common API server for client"
     }
   ]
 }

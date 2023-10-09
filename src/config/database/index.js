@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { MONGO_URL, NODE_ENV } from '../env';
+import { MONGO_DB_NAME, MONGO_URL, NODE_ENV } from '../env';
 
 /**
  * It connects to the database
@@ -8,7 +8,7 @@ const isDEV = NODE_ENV === 'development';
 export async function connect() {
   try {
     const options = {
-      dbName: 'blog-db',
+      dbName: MONGO_DB_NAME,
       minPoolSize: 10,
       useNewUrlParser: true,
       useUnifiedTopology: true,

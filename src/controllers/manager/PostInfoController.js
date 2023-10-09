@@ -1,6 +1,6 @@
 import { VOTE } from '@/config/constants';
 import { markRequest, voteRequest } from '@/models/requests/PostInfo';
-import PostInfoService from '@/services/PostInfo';
+import PostInfoService from '@/services/manager/PostInfo';
 
 const PostInfoController = {
   async mark(req, res, next) {

@@ -1,6 +1,6 @@
 import express from 'express';
 import { setupApp } from '@/plugins';
-import { PORT } from '@/config/env';
+import { NODE_ENV, PORT } from '@/config/env';
 import { connect } from '@/config/database';
 
 const app = express();
@@ -11,5 +11,5 @@ setupApp(app);
 connect();
 
 app.listen(PORT, () => {
-  console.log(`Server is running at http://localhost:${PORT}`);
+  NODE_ENV === 'development' && console.log(`Server is running at http://localhost:${PORT}`);
 });

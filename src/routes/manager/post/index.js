@@ -1,6 +1,6 @@
 import express from 'express';
-import PostController from '@/controllers/PostController';
-import PostInfoController from '@/controllers/PostInfoController';
+import PostController from '@/controllers/manager/PostController';
+import PostInfoController from '@/controllers/manager/PostInfoController';
 
 const router = express.Router();
 const PREFIX = '/post';

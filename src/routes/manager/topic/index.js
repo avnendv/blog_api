@@ -1,5 +1,5 @@
 import express from 'express';
-import TopicController from '@/controllers/TopicController';
+import TopicController from '@/controllers/manager/TopicController';
 
 const router = express.Router();
 const PREFIX = '/topic';

@@ -1,3 +1,4 @@
+import passport from 'passport';
 import User from '@/models/User';
 import { successResponse } from '@/utils';
 
@@ -16,7 +17,17 @@ const UserService = {
     const isCorrectPassword = await user.isValidPassword(password);
     if (!isCorrectPassword) throw { msg };
 
-    return successResponse(user.toAuthJSON());
+    return (req, res, next) => {
+      const token = user.generateJWT();
+      req.body.token = token;
+      console.log(token);
+      passport.authenticate('jwt', (err, user) => {
+        if (err) return next(err);
+        if (!user) throw { msg: 'Login error' };
+
+        return res.json(successResponse({ ...user, token }));
+      })(req, res, next);
+    };
   },
 };
 

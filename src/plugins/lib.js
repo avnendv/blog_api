@@ -1,13 +1,16 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
+import MongoStore from 'connect-mongo';
 import logger from 'morgan';
 import cors from 'cors';
 import compression from 'compression';
 import helmet from 'helmet';
 import { rateLimit } from 'express-rate-limit';
-import { NODE_ENV, TOKEN_SECRET } from '@/config/env';
+import passport from 'passport';
+import { MONGO_DB_NAME, MONGO_URL, NODE_ENV, TOKEN_SECRET } from '@/config/env';
 import { A_SECOND } from '@/config/constants';
+import setupPassport from '@/config/passport';
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -16,6 +19,16 @@ const limiter = rateLimit({
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
   // store: ... , // Use an external store for more precise rate limiting
 });
+
+const storeConfig = {
+  mongoUrl: MONGO_URL,
+  autoRemove: 'native',
+  dbName: MONGO_DB_NAME,
+  ttl: 7 * 24 * 60 * 60, // 7 days
+  crypto: {
+    secret: 'squirrel',
+  },
+};
 
 export const setupLibs = (app) => {
   app.use(logger('dev'));
@@ -28,11 +41,17 @@ export const setupLibs = (app) => {
       cookie: { maxAge: 2 * 60 * 60 * A_SECOND }, // 2 hours
       resave: false,
       saveUninitialized: true,
+      store: MongoStore.create(storeConfig),
     })
   );
   app.use(cors());
   app.use(helmet());
   app.use(compression());
+
+  // passport config
+  setupPassport(passport);
+  app.use(passport.initialize());
+  app.use(passport.session());
 
   // Apply the rate limiting middleware to all requests on production
   if (NODE_ENV === 'production') app.use(limiter);

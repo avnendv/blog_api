@@ -1,5 +1,5 @@
 import { storeRequest, updateRequest } from '@/models/requests/Tag';
-import TagService from '@/services/Tag';
+import TagService from '@/services/manager/Tag';
 
 const TagController = {
   async list(req, res, next) {

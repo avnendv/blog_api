@@ -1,5 +1,5 @@
 import express from 'express';
-import TagController from '@/controllers/TagController';
+import TagController from '@/controllers/manager/TagController';
 
 const router = express.Router();
 const PREFIX = '/tag';

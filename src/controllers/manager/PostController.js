@@ -1,10 +1,10 @@
-import { storeRequest, updateRequest } from '@/models/requests/Topic';
-import TopicService from '@/services/Topic';
+import { storeRequest, updateRequest } from '@/models/requests/Post';
+import PostService from '@/services/manager/Post';
 
-const TopicController = {
+const PostController = {
   async list(req, res, next) {
     try {
-      const data = await TopicService.list(req.query);
+      const data = await PostService.list(req.query);
       return res.json(data);
     } catch (error) {
       next(error);
@@ -15,7 +15,7 @@ const TopicController = {
       const { error } = storeRequest(req.body);
       if (error) throw { msg: error.details[0].message };
 
-      const data = await TopicService.store(req.body);
+      const data = await PostService.store(req.body);
       return res.json(data);
     } catch (error) {
       next(error);
@@ -29,7 +29,7 @@ const TopicController = {
       const { error } = updateRequest(req.body);
       if (error) throw { msg: error.details[0].message };
 
-      const data = await TopicService.update({ id, ...req.body });
+      const data = await PostService.update({ id, ...req.body });
       return res.json(data);
     } catch (error) {
       next(error);
@@ -40,7 +40,7 @@ const TopicController = {
       const { id } = req.params;
       if (!id) throw { msg: 'Parameter is required!' };
 
-      const data = await TopicService.destroy(id);
+      const data = await PostService.destroy(id);
       return res.json(data);
     } catch (error) {
       next(error);
@@ -48,4 +48,4 @@ const TopicController = {
   },
 };
 
-export default TopicController;
+export default PostController;

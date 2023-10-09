@@ -1,7 +1,4 @@
-import userRoute from './user';
-import tagRoute from './tag';
-import topicRoute from './topic';
-import postRoute from './post';
+import ManagerRouter from './manager';
 import HelloWorldController from '@/controllers/HelloWorldController';
 
 import { errorHandle } from '@/middlewares';
@@ -11,10 +8,7 @@ const router = (app) => {
 
   app.get('/', HelloWorldController);
 
-  app.use(`${v1Prefix}`, userRoute);
-  app.use(`${v1Prefix}`, tagRoute);
-  app.use(`${v1Prefix}`, topicRoute);
-  app.use(`${v1Prefix}`, postRoute);
+  app.use(`${v1Prefix}/admin`, ManagerRouter);
 
   // handle errors
   app.use(errorHandle);

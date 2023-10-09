@@ -1,5 +1,5 @@
 import { loginRequest, registerRequest } from '@/models/requests/User';
-import UserService from '@/services/User';
+import UserService from '@/services/manager/User';
 
 const UserController = {
   async register(req, res, next) {
@@ -8,6 +8,7 @@ const UserController = {
       if (error) throw { msg: error.details[0].message };
 
       const data = await UserService.register(req.body);
+
       return res.json(data);
     } catch (error) {
       next(error);
@@ -19,7 +20,9 @@ const UserController = {
       if (error) throw { msg: error.details[0].message };
 
       const data = await UserService.login(req.body);
-      return res.json(data);
+
+      return data(req, res, next);
+      // return res.json(data);
     } catch (error) {
       next(error);
     }
