@@ -1,5 +1,6 @@
 import { loginRequest, registerRequest } from '@/models/requests/User';
 import UserService from '@/services/manager/User';
+import { successResponse } from '@/utils';
 
 const UserController = {
   async register(req, res, next) {
@@ -22,7 +23,26 @@ const UserController = {
       const data = await UserService.login(req.body);
 
       return data(req, res, next);
-      // return res.json(data);
+    } catch (error) {
+      next(error);
+    }
+  },
+  async check(req, res, next) {
+    try {
+      if (req.user) return res.json(successResponse());
+
+      throw { msg: '' };
+    } catch (error) {
+      next(error);
+    }
+  },
+  async logout(req, res, next) {
+    try {
+      req.logout((error) => {
+        if (error) throw { msg: error };
+        req.session.destroy();
+        return res.json(successResponse());
+      });
     } catch (error) {
       next(error);
     }

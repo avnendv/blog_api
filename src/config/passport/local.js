@@ -3,7 +3,13 @@ import { TOKEN_SECRET } from '../env';
 import User from '@/models/User';
 
 const cookieExtractor = function (req) {
-  return req.body.token || req.query.token || req.headers['x-access-token'] || req.cookies['jwt'];
+  return (
+    req.body.token ||
+    req.query.token ||
+    req.headers['x-access-token'] ||
+    req.headers['authorization']?.split(' ')[1] ||
+    req.cookies['jwt']
+  );
 };
 const opts = { secretOrKey: TOKEN_SECRET, jwtFromRequest: cookieExtractor };
 

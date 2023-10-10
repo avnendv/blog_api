@@ -40,7 +40,7 @@ export const setupLibs = (app) => {
       secret: TOKEN_SECRET,
       cookie: { maxAge: 2 * 60 * 60 * A_SECOND }, // 2 hours
       resave: false,
-      saveUninitialized: true,
+      saveUninitialized: false,
       store: MongoStore.create(storeConfig),
     })
   );

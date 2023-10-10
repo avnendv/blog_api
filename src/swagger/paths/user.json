@@ -40,11 +40,29 @@
       "responses": {}
     }
   },
-  "/profile": {
+  "/check": {
     "get": {
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
       "tags": ["User"],
-      "summary": "Get a user with check info",
-      "description": "Response information user",
+      "summary": "Check user logged",
+      "description": "Check user logged",
+      "responses": {}
+    }
+  },
+  "/logout": {
+    "delete": {
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "tags": ["User"],
+      "summary": "Logout User",
+      "description": "Logout User",
       "responses": {}
     }
   }
