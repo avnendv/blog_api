@@ -33,6 +33,11 @@ const UserService = {
       })(req, res, next);
     };
   },
+  async profile(id) {
+    const user = await User.findById(id).select('-_id -password -__v -authType -createdAt -updatedAt');
+
+    return successResponse(user);
+  },
 };
 
 export default UserService;

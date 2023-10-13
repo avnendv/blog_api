@@ -53,6 +53,33 @@
       "responses": {}
     }
   },
+  "/profile": {
+    "get": {
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "tags": ["User"],
+      "summary": "User Profile",
+      "description": "User Profile",
+      "responses": {}
+    }
+  },
+  "/follow": {
+    "post": {
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "tags": ["User"],
+      "summary": "Follow User",
+      "description": "Follow User",
+      "requestBody": {},
+      "responses": {}
+    }
+  },
   "/logout": {
     "delete": {
       "security": [

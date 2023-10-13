@@ -47,6 +47,15 @@ const UserController = {
       next(error);
     }
   },
+  async profile(req, res, next) {
+    try {
+      const data = await UserService.profile('651d2e5853ac6188aa3f683d');
+
+      return res.json(data);
+    } catch (error) {
+      next(error);
+    }
+  },
 };
 
 export default UserController;

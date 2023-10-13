@@ -1,3 +1,4 @@
+import ClientRouter from './core';
 import ManagerRouter from './manager';
 import HelloWorldController from '@/controllers/HelloWorldController';
 
@@ -8,6 +9,7 @@ const router = (app) => {
 
   app.get('/', HelloWorldController);
 
+  app.use(`${v1Prefix}`, ClientRouter);
   app.use(`${v1Prefix}/admin`, ManagerRouter);
 
   // handle errors
