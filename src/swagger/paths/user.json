@@ -76,7 +76,15 @@
       "tags": ["User"],
       "summary": "Follow User",
       "description": "Follow User",
-      "requestBody": {},
+      "requestBody": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Follow"
+            }
+          }
+        }
+      },
       "responses": {}
     }
   },

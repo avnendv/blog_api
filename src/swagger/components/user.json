@@ -55,5 +55,14 @@
         "default": "avnendv123"
       }
     }
+  },
+  "Follow": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "type": "boolean",
+        "default": true
+      }
+    }
   }
 }

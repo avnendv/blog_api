@@ -19,15 +19,20 @@ const UserService = {
     await userProfile.populate('followed followers', 'followers.userName');
     return successResponse({ ...user.toObject(), profile: { ...userProfile.toObject() } });
   },
-  async follow(id, followUser) {
+  async follow({ id, followed, type }) {
     const session = await mongoose.startSession();
     try {
       session.startTransaction();
-      await Promise.all([
-        UserProfile.updateOne({ user: id }, { $addToSet: { followed: followUser } }, { upsert: true }),
-        UserProfile.updateOne({ user: followUser }, { $addToSet: { followers: id } }, { upsert: true }),
-      ]);
-
+      if (type)
+        await Promise.all([
+          UserProfile.updateOne({ user: id }, { $addToSet: { followed } }, { upsert: true }),
+          UserProfile.updateOne({ user: followed }, { $addToSet: { followers: id } }, { upsert: true }),
+        ]);
+      else
+        await Promise.all([
+          UserProfile.updateOne({ user: id }, { $pull: { followed } }, { upsert: true }),
+          UserProfile.updateOne({ user: followed }, { $pull: { followers: id } }, { upsert: true }),
+        ]);
       await session.commitTransaction();
       session.endSession();
 
