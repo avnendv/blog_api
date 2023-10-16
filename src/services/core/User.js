@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
+import { successResponse } from '@/utils';
 import User from '@/models/User';
 import UserProfile from '@/models/UserProfile';
-import { successResponse } from '@/utils';
 
 const UserService = {
   async profile(id) {
@@ -12,11 +12,11 @@ const UserService = {
 
     if (!userProfile) {
       const data = await UserProfile.create({ user: id });
-      // data.populate('followed followers');
+      await data.populate('followed followers');
       return successResponse({ ...user.toObject(), profile: { ...data.toObject() } });
     }
 
-    // userProfile.populate('followed', 'userName');
+    await userProfile.populate('followed followers', 'followers.userName');
     return successResponse({ ...user.toObject(), profile: { ...userProfile.toObject() } });
   },
   async follow(id, followUser) {
