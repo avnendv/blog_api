@@ -8,9 +8,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --exec babel-node -r tsconfig-paths/register src/index.js",
     "clean": "rm -rf build && mkdir build",
-    "build-babel": "babel ./src -d ./build/src",
+    "build-babel": "babel ./src --copy-files *.json -d ./build/src",
     "build": "npm run clean && npm run build-babel",
-    "production": "npm run build && node ./build/src/index.js",
+    "production": "npm run build && node -r ./jsconfig-paths-bootstrap.js ./build/src/index.js",
     "lint": "eslint ./src --fix --max-warnings=0",
     "lint:prettier": "prettier --write  \"src/**/*.{js,json,css,less,scss,html,md}\"",
     "lint:lint-staged": "lint-staged"
