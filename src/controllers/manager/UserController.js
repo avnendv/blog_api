@@ -29,9 +29,9 @@ const UserController = {
   },
   async check(req, res, next) {
     try {
-      if (req.user) return res.json(successResponse());
+      if (req.user) return res.json(successResponse(req.user));
 
-      throw { msg: '' };
+      throw { code: 401, msg: '' };
     } catch (error) {
       next(error);
     }
@@ -49,7 +49,9 @@ const UserController = {
   },
   async profile(req, res, next) {
     try {
-      const data = await UserService.profile('651d2e5853ac6188aa3f683d');
+      if (!req.user) throw { code: 401, msg: '' };
+
+      const data = await UserService.profile(req.user._id);
 
       return res.json(data);
     } catch (error) {
