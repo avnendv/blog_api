@@ -8,7 +8,7 @@ const Role = new Schema(
     status: {
       type: Number,
       enum: Object.values(STATUS),
-      default: 1,
+      default: STATUS.ENABLE,
     },
   },
   {
