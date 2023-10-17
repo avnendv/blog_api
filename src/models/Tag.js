@@ -25,12 +25,10 @@ const Tag = new Schema({
 });
 
 Tag.pre('save', function (next) {
-  // remove tags from tutorial:
   this.model('post')
     .updateMany({ _id: { $nin: this.post } }, { $pull: { tag: this.name } })
     .exec();
 
-  // add tags to tutorial:
   this.model('post')
     .updateMany({ _id: { $in: this.post } }, { $addToSet: { tag: this.name } })
     .exec();

@@ -1,12 +1,13 @@
 import { Schema, model } from 'mongoose';
 import { STATUS } from '@/config/constants';
+import { slugify } from '@/utils';
 
 const Topic = new Schema({
   title: {
     type: String,
     required: true,
     trim: true,
-    min: 6,
+    min: 2,
   },
   slug: {
     type: String,
@@ -24,6 +25,36 @@ const Topic = new Schema({
     enum: Object.values(STATUS),
     default: 1,
   },
+});
+
+Topic.pre('save', async function (next) {
+  try {
+    if (this.slug) {
+      this.slug = slugify(this.slug, false);
+      next();
+      return;
+    }
+
+    this.slug = slugify(this.title);
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
+Topic.pre('findOneAndUpdate', async function (next) {
+  try {
+    if (this._update.slug) {
+      this._update.slug = slugify(this._update.slug, false);
+      next();
+      return;
+    }
+
+    this._update.slug = slugify(this._update.title);
+    next();
+  } catch (error) {
+    next(error);
+  }
 });
 
 Topic.methods.toResource = function () {

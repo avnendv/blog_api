@@ -3,7 +3,10 @@ import { successResponse } from '@/utils';
 
 const TopicService = {
   async list(data) {
-    const topics = await Topic.find(data).sort({ isShowTop: -1 }).select('title slug thumbnail description status');
+    data = {};
+    const topics = await Topic.find(data)
+      .sort({ isShowTop: -1 })
+      .select('title slug thumbnail description isShowTop status');
 
     return successResponse(topics);
   },

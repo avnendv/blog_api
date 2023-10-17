@@ -19,7 +19,7 @@ export const successResponse = (data = null) => {
 };
 
 /** slug generator */
-export const slugify = (str, prefix = '-') => {
+export const slugify = (str, gen = true, prefix = '-') => {
   const slug = String(str)
     .normalize('NFKD') // split accented characters into their base characters and diacritical marks
     .replace(/[\u0300-\u036f]/g, '') // remove all the accents, which happen to be all in the \u03xx UNICODE block.
@@ -29,5 +29,5 @@ export const slugify = (str, prefix = '-') => {
     .replace(/[^a-z0-9 -]/g, '') // remove non-alphanumeric characters
     .replace(/\s+/g, prefix) // replace spaces with hyphens
     .replace(/-+/g, prefix);
-  return `${slug}${prefix}${generate()}`;
+  return `${slug}${gen ? prefix + generate() : ''}`;
 };

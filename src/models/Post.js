@@ -64,6 +64,7 @@ Post.pre('save', async function (next) {
     if (this.slug) {
       this.slug = slugify(this.slug);
       next();
+      return;
     }
     this.slug = slugify(this.title);
     next();
@@ -81,6 +82,7 @@ Post.pre('findOneAndUpdate', async function (next) {
     if (this._update.slug) {
       this._update.slug = slugify(this._update.slug);
       next();
+      return;
     }
     this._update.slug = slugify(this._update.title);
     next();

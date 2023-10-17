@@ -3,7 +3,8 @@ import { successResponse } from '@/utils';
 
 const TagService = {
   async list(data) {
-    const tags = await Tag.find(data).sort({ isShowTop: -1 }).select('name description status -_id');
+    data = {};
+    const tags = await Tag.find(data).sort({ isShowTop: -1 }).select('name description isShowTop status -_id');
 
     return successResponse(tags);
   },

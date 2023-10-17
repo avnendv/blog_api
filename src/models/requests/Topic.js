@@ -11,7 +11,7 @@ const obj = {
 export const storeRequest = (data) => {
   const rule = Joi.object({
     ...obj,
-    title: Joi.string().trim().min(2).max(20).required(),
+    title: Joi.string().trim().min(2).max(50).required(),
   });
 
   return rule.validate(data);
@@ -20,7 +20,7 @@ export const storeRequest = (data) => {
 export const updateRequest = (data) => {
   const rule = Joi.object({
     ...obj,
-    title: Joi.string().trim().min(2).max(20),
+    title: Joi.string().trim().min(2).max(50),
   });
 
   return rule.validate(data);
