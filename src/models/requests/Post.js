@@ -1,4 +1,5 @@
 import Joi from 'joi';
+import { POST_TYPE, PUBLISH, STATUS } from '@/config/constants';
 
 const obj = {
   title: Joi.string().trim().min(2).max(20),
@@ -7,11 +8,16 @@ const obj = {
   thumbnail: Joi.string(),
   description: Joi.string(),
   isShowTop: Joi.boolean(),
-  status: Joi.number().integer(),
-  publish: Joi.number().integer(),
-  postType: Joi.number().integer(),
+  status: Joi.number().integer().valid(STATUS.DISABLE, STATUS.ENABLE),
+  publish: Joi.number()
+    .integer()
+    .valid(...Object.values(PUBLISH)),
+  postType: Joi.number()
+    .integer()
+    .valid(...Object.values(POST_TYPE)),
   tag: Joi.array(),
   topic: Joi.string().trim(),
+  series: Joi.string().trim(),
 };
 
 export const storeRequest = (data) => {

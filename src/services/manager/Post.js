@@ -1,26 +1,48 @@
 import mongoose from 'mongoose';
+import { sanitize } from 'isomorphic-dompurify';
 import TagService from './Tag';
 import Post from '@/models/Post';
 import { successResponse } from '@/utils';
+import Tag from '@/models/Tag';
+import PostInfo from '@/models/PostInfo';
+import { POST_TYPE } from '@/config/constants';
 
 const PostService = {
   async list(data) {
-    const posts = await Post.find(data).sort({ isShowTop: -1 }).select('title slug thumbnail description status');
+    data = {};
+    const posts = await Post.find(data)
+      .sort({ isShowTop: -1 })
+      .select('title thumbnail description publish status updatedAt')
+      .populate('topic', 'title')
+      .populate('series', 'title')
+      .populate({
+        path: 'tag',
+        localField: 'tag',
+        foreignField: 'name',
+        select: '-_id name',
+      })
+      .populate('author', '-_id fullName');
 
     return successResponse(posts);
+  },
+  async show(id) {
+    const post = await Post.findById(id)
+      .sort({ isShowTop: -1 })
+      .select('-author -__v -viewed')
+      .populate('series', 'title');
+
+    return successResponse(post);
   },
   async store(data) {
     const session = await mongoose.startSession();
     try {
       session.startTransaction();
 
-      const dataStore = {
-        ...data,
-        author: '651d2e5853ac6188aa3f683d',
-      };
       await TagService.insertOnNotExists(data.tag, session);
 
-      const post = await new Post(dataStore);
+      await this.checkSeries(data);
+
+      const post = await new Post({ ...data, content: sanitize(data.content) });
       await post.save({
         session,
         new: true,
@@ -42,20 +64,22 @@ const PostService = {
     try {
       session.startTransaction();
 
-      const dataUpdate = {
-        ...data,
-        author: '651d2e5853ac6188aa3f683d',
-      };
       await TagService.insertOnNotExists(data.tag, session);
-      const post = await Post.findByIdAndUpdate(id, dataUpdate, { new: true, session });
 
-      await session.commitTransaction();
-      session.endSession();
+      await this.checkSeries(data, id);
+
+      const post = await Post.findByIdAndUpdate(
+        id,
+        { ...data, content: sanitize(data.content) },
+        { new: true, session }
+      );
 
       if (!post)
         throw {
           msg: 'Data not found!',
         };
+      await session.commitTransaction();
+      session.endSession();
 
       return successResponse(post.toResource());
     } catch (error) {
@@ -66,13 +90,30 @@ const PostService = {
     }
   },
   async destroy(id) {
-    const data = await Post.findByIdAndRemove(id);
-    if (!data)
-      throw {
-        msg: 'Data not found!',
-      };
+    const session = await mongoose.startSession();
+    try {
+      session.startTransaction();
 
-    return successResponse();
+      const [data] = await Promise.all([
+        Post.findByIdAndRemove(id),
+        Tag.updateMany({ post: id }, { $pull: { post: id } }, { multi: true }),
+        PostInfo.deleteMany({ post: id }),
+      ]);
+
+      if (!data)
+        throw {
+          msg: 'Data not found!',
+        };
+      await session.commitTransaction();
+      session.endSession();
+
+      return successResponse();
+    } catch (error) {
+      await session.abortTransaction();
+      session.endSession();
+
+      throw error;
+    }
   },
   async upView(id) {
     const post = await Post.findByIdAndUpdate(
@@ -84,6 +125,21 @@ const PostService = {
     );
 
     return !!post;
+  },
+  async seriesByAuthor(author) {
+    const data = await Post.find({ postType: POST_TYPE.SERIES, author }).select('title');
+    return successResponse(data);
+  },
+  async checkSeries(data, id = null) {
+    if (data.postType && data.series) {
+      if (data.series === id) throw { msg: 'Series and Post is equal' };
+      if ([POST_TYPE.SERIES, POST_TYPE.POST].includes(data.postType)) delete data.series;
+      else {
+        const series = await Post.exists({ _id: data.series, postType: POST_TYPE.SERIES });
+
+        if (!series) throw { msg: 'Series not exists' };
+      }
+    }
   },
 };
 

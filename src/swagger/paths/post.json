@@ -33,7 +33,41 @@
       "responses": {}
     }
   },
+  "/post/series": {
+    "get": {
+      "tags": ["Post"],
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "summary": "Series Post",
+      "description": "Series Post",
+      "responses": {}
+    }
+  },
   "/post/{id}": {
+    "get": {
+      "tags": ["Post"],
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "summary": "Show Post",
+      "description": "Show Post",
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "responses": {}
+    },
     "put": {
       "tags": ["Post"],
       "security": [

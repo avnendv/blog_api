@@ -1,4 +1,5 @@
 import Joi from 'joi';
+import { STATUS } from '@/config/constants';
 
 const obj = {
   email: Joi.string().trim().min(4).max(50).required().email(),
@@ -15,7 +16,7 @@ export const registerRequest = (data) => {
     gender: Joi.number().allow(null).integer(),
     phone: Joi.string().trim().max(12).allow(null, ''),
     address: Joi.string().trim().allow(null, ''),
-    status: Joi.number().integer(),
+    status: Joi.number().integer().valid(STATUS.DISABLE, STATUS.ENABLE),
   });
 
   return rule.validate(data);

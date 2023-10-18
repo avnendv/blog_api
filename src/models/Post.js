@@ -23,10 +23,7 @@ const Post = new Schema(
     },
     thumbnail: String,
     description: String,
-    content: {
-      type: String,
-      required: true,
-    },
+    content: String,
     publish: {
       type: Number,
       enum: Object.values(PUBLISH),
@@ -39,6 +36,7 @@ const Post = new Schema(
       enum: Object.values(POST_TYPE),
       default: POST_TYPE.POST,
     },
+    series: { type: Schema.Types.ObjectId, ref: 'post' },
     attr: [
       {
         k: String,
@@ -60,19 +58,21 @@ const Post = new Schema(
 
 Post.pre('save', async function (next) {
   try {
-    this.model('tag')
-      .updateMany({ name: { $nin: this.tag } }, { $pull: { post: this._id } })
-      .exec();
-
-    this.model('tag')
-      .updateMany({ name: { $in: this.tag } }, { $addToSet: { post: this._id } })
-      .exec();
+    await Promise.all([
+      this.model('tag')
+        .updateMany({ name: { $nin: this.tag } }, { $pull: { post: this._id } })
+        .exec(),
+      this.model('tag')
+        .updateMany({ name: { $in: this.tag } }, { $addToSet: { post: this._id } })
+        .exec(),
+    ]);
 
     if (this.slug) {
-      this.slug = slugify(this.slug);
+      this.slug = slugify(this.slug, false);
       next();
       return;
     }
+
     this.slug = slugify(this.title);
     next();
   } catch (error) {
@@ -82,26 +82,18 @@ Post.pre('save', async function (next) {
 
 Post.pre('findOneAndUpdate', async function (next) {
   try {
-    Tag.updateMany({ name: { $nin: this._update.tag } }, { $pull: { post: this._conditions._id } }).exec();
-
-    Tag.updateMany({ name: { $in: this._update.tag } }, { $addToSet: { post: this._conditions._id } }).exec();
+    await Promise.all([
+      Tag.updateMany({ name: { $nin: this._update.tag } }, { $pull: { post: this._conditions._id } }).exec(),
+      Tag.updateMany({ name: { $in: this._update.tag } }, { $addToSet: { post: this._conditions._id } }).exec(),
+    ]);
 
     if (this._update.slug) {
-      this._update.slug = slugify(this._update.slug);
+      this._update.slug = slugify(this._update.slug, false);
       next();
       return;
     }
+
     this._update.slug = slugify(this._update.title);
-    next();
-  } catch (error) {
-    next(error);
-  }
-});
-
-Post.pre('findOneAndRemove', async function (next) {
-  try {
-    await Tag.updateMany({ post: this._conditions._id }, { $pull: { post: this._conditions._id } }, { multi: true });
-
     next();
   } catch (error) {
     next(error);

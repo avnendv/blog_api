@@ -3,7 +3,7 @@ import { errorResponse } from '@/utils';
 
 // eslint-disable-next-line no-unused-vars
 export const errorHandle = (err, _req, res, _next) => {
-  const message = err?.toString() ?? '';
+  const message = JSON.stringify(err?.toString() ?? '');
   let msg;
 
   if (message?.includes('ValidationError')) msg = 'ValidationError';

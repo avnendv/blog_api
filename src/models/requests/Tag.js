@@ -1,9 +1,10 @@
 import Joi from 'joi';
+import { STATUS } from '@/config/constants';
 
 const obj = {
   description: Joi.string(),
   isShowTop: Joi.boolean(),
-  status: Joi.number().integer(),
+  status: Joi.number().integer().valid(STATUS.DISABLE, STATUS.ENABLE),
 };
 
 export const storeRequest = (data) => {

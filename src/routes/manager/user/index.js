@@ -7,8 +7,8 @@ const router = express.Router();
 // auth
 router.post('/register', UserController.register);
 router.post('/login', UserController.login);
-router.get('/check', passport.authenticate('jwt', { session: false }), UserController.check);
-router.get('/profile', passport.authenticate('jwt', { session: false }), UserController.profile);
-router.delete('/logout', UserController.logout);
+router.get('/check', passport.authenticate('jwt'), UserController.check);
+router.get('/profile', passport.authenticate('jwt'), UserController.profile);
+router.delete('/logout', passport.authenticate('jwt'), UserController.logout);
 
 export default router;

@@ -10,12 +10,31 @@ const PostController = {
       next(error);
     }
   },
+  async series(req, res, next) {
+    try {
+      const data = await PostService.seriesByAuthor(req.user._id);
+      return res.json(data);
+    } catch (error) {
+      next(error);
+    }
+  },
+  async show(req, res, next) {
+    try {
+      const { id } = req.params;
+      if (!id) throw { msg: 'Parameter is required!' };
+
+      const data = await PostService.show(id);
+      return res.json(data);
+    } catch (error) {
+      next(error);
+    }
+  },
   async store(req, res, next) {
     try {
       const { error } = storeRequest(req.body);
       if (error) throw { msg: error.details[0].message };
 
-      const data = await PostService.store(req.body);
+      const data = await PostService.store({ author: req.user._id, ...req.body });
       return res.json(data);
     } catch (error) {
       next(error);
