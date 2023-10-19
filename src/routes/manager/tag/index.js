@@ -1,11 +1,12 @@
 import express from 'express';
 import passport from 'passport';
 import TagController from '@/controllers/manager/TagController';
+import { verifyToken } from '@/middlewares/auth';
 
 const router = express.Router();
 const PREFIX = '/tag';
 
-router.use('*', passport.authenticate('jwt'));
+router.use('*', verifyToken, passport.authenticate('jwt'));
 router.get(`${PREFIX}`, TagController.list);
 router.post(`${PREFIX}`, TagController.store);
 router.put(`${PREFIX}/:id`, TagController.update);

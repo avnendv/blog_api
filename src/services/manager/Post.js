@@ -5,25 +5,42 @@ import Post from '@/models/Post';
 import { successResponse } from '@/utils';
 import Tag from '@/models/Tag';
 import PostInfo from '@/models/PostInfo';
-import { POST_TYPE } from '@/config/constants';
+import { PER_PAGE, POST_TYPE } from '@/config/constants';
 
 const PostService = {
   async list(data) {
-    data = {};
-    const posts = await Post.find(data)
-      .sort({ isShowTop: -1 })
-      .select('title thumbnail description publish status updatedAt')
-      .populate('topic', 'title')
-      .populate('series', 'title')
-      .populate({
-        path: 'tag',
-        localField: 'tag',
-        foreignField: 'name',
-        select: '-_id name',
-      })
-      .populate('author', '-_id fullName');
+    const { limit = PER_PAGE, page = 1, keyword = '' } = data;
 
-    return successResponse(posts);
+    const filters = {
+      $or: [
+        {
+          title: { $regex: keyword, $options: 'i' },
+        },
+        {
+          description: { $regex: keyword, $options: 'i' },
+        },
+      ],
+    };
+
+    const [posts, totalDocs] = await Promise.all([
+      Post.find(filters)
+        .sort({ isShowTop: -1 })
+        .select('title thumbnail description publish status updatedAt')
+        .populate('topic', 'title')
+        .populate('series', 'title')
+        .populate({
+          path: 'tag',
+          localField: 'tag',
+          foreignField: 'name',
+          select: '-_id name',
+        })
+        .populate('author', '-_id fullName'),
+      Post.countDocuments(filters),
+    ]);
+
+    const pagination = { limit, page, total: totalDocs, pages: Math.ceil(totalDocs / limit) };
+
+    return successResponse(posts, pagination);
   },
   async show(id) {
     const post = await Post.findById(id)

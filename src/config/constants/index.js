@@ -1,6 +1,7 @@
 export const A_SECOND = 1000;
 export const RESULT_FAIL = 0;
 export const RESULT_OK = 1;
+export const PER_PAGE = 10;
 
 export const STATUS = {
   DELETED: -1,

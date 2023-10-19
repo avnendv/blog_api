@@ -1,12 +1,34 @@
+import { PER_PAGE } from '@/config/constants';
 import Tag from '@/models/Tag';
 import { successResponse } from '@/utils';
 
 const TagService = {
   async list(data) {
-    data = {};
-    const tags = await Tag.find(data).sort({ isShowTop: -1 }).select('name description isShowTop status -_id');
+    const { limit = PER_PAGE, page = 1, keyword = '' } = data;
 
-    return successResponse(tags);
+    const filters = {
+      $or: [
+        {
+          name: { $regex: keyword, $options: 'i' },
+        },
+        {
+          description: { $regex: keyword, $options: 'i' },
+        },
+      ],
+    };
+
+    const [tags, totalDocs] = await Promise.all([
+      await Tag.find(filters)
+        .select('name description isShowTop status -_id')
+        .sort({ isShowTop: -1 })
+        .skip((parseInt(page) - 1) * parseInt(limit))
+        .limit(parseInt(limit)),
+      await Tag.countDocuments(filters),
+    ]);
+
+    const pagination = { limit, page, total: totalDocs, pages: Math.ceil(totalDocs / limit) };
+
+    return successResponse(tags, pagination);
   },
   async store(data) {
     const tag = await Tag.create(data);

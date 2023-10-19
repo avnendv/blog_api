@@ -12,7 +12,6 @@ export default function (passport) {
     new Strategy(opts, async function (jwtPayload, done) {
       try {
         const user = await User.findById(jwtPayload._id);
-        console.log(jwtPayload);
         if (!user) throw Error('User not found');
 
         done(null, { ...user.toAuthJSON() });

@@ -1,14 +1,30 @@
+import { PER_PAGE } from '@/config/constants';
 import Topic from '@/models/Topic';
 import { successResponse } from '@/utils';
 
 const TopicService = {
   async list(data) {
-    data = {};
-    const topics = await Topic.find(data)
-      .sort({ isShowTop: -1 })
-      .select('title slug thumbnail description isShowTop status');
+    const { limit = PER_PAGE, page = 1, keyword = '' } = data;
 
-    return successResponse(topics);
+    const filters = {
+      $or: [
+        {
+          title: { $regex: keyword, $options: 'i' },
+        },
+        {
+          description: { $regex: keyword, $options: 'i' },
+        },
+      ],
+    };
+
+    const [topics, totalDocs] = await Promise.all([
+      Topic.find(filters).sort({ isShowTop: -1 }).select('title slug thumbnail description isShowTop status'),
+      Topic.countDocuments(filters),
+    ]);
+
+    const pagination = { limit, page, total: totalDocs, pages: Math.ceil(totalDocs / limit) };
+
+    return successResponse(topics, pagination);
   },
   async store(data) {
     const topic = await Topic.create(data);
