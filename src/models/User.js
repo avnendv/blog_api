@@ -2,7 +2,7 @@ import { Schema, model } from 'mongoose';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { AUTH_TYPE, GENDER, STATUS } from '@/config/constants';
-import { TOKEN_SECRET } from '@/config/env';
+import { TOKEN_EXPIRE, TOKEN_SECRET } from '@/config/env';
 
 const User = new Schema(
   {
@@ -88,7 +88,7 @@ User.methods.generateJWT = function () {
       role: this.role,
     },
     TOKEN_SECRET,
-    { expiresIn: '24h' }
+    { expiresIn: TOKEN_EXPIRE }
   );
 };
 
@@ -111,7 +111,6 @@ User.methods.toAuthJSON = function () {
     fullName: this.fullName,
     avatar: this.avatar,
     address: this.address,
-    token: this.generateJWT(),
   };
 };
 

@@ -19,7 +19,7 @@ const UserService = {
 
     return (req, res, next) => {
       const token = user.generateJWT();
-      req.body.token = token;
+      req.token = token;
       passport.authenticate('jwt', (err, user) => {
         if (err) return next(err);
         if (!user) throw { msg: 'Login error' };

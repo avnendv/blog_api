@@ -1,3 +1,4 @@
+import Backlist from '@/models/TokenBacklist';
 import { loginRequest, registerRequest } from '@/models/requests/User';
 import UserService from '@/services/manager/User';
 import { successResponse } from '@/utils';
@@ -38,9 +39,13 @@ const UserController = {
   },
   async logout(req, res, next) {
     try {
-      req.logout((error) => {
+      const { token } = req;
+      req.logout(async (error) => {
         if (error) throw { msg: error };
         req.session.destroy();
+
+        await Backlist.create({ token });
+
         return res.json(successResponse());
       });
     } catch (error) {

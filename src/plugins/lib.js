@@ -38,7 +38,7 @@ export const setupLibs = (app) => {
   app.use(
     session({
       secret: TOKEN_SECRET,
-      cookie: { maxAge: 2 * 60 * 60 * A_SECOND }, // 2 hours
+      cookie: { maxAge: 24 * 60 * 60 * A_SECOND }, // 24 hours
       resave: false,
       saveUninitialized: false,
       store: MongoStore.create(storeConfig),

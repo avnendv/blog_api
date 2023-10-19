@@ -1,14 +1,17 @@
-import jwt from 'jsonwebtoken';
-import { TOKEN_SECRET } from '@/config/env';
+import Backlist from '@/models/TokenBacklist';
 
-export const verifyToken = (req, _res, next) => {
+export const verifyToken = async (req, _res, next) => {
   try {
-    const token = req.body.token || req.query.token || req.headers['x-access-token'];
-    if (!token) {
-      throw { msg: 'A token is required for authentication!' };
-    }
-    const decoded = jwt.verify(token, TOKEN_SECRET);
-    req.userId = decoded._id;
+    const token =
+      req.body.token ||
+      req.query.token ||
+      req.headers['x-access-token'] ||
+      req.headers['authorization']?.split(' ')[1] ||
+      req.cookies['jwt'];
+    if (!token) throw { msg: 'A token is required for authentication!' };
+
+    const isExists = await Backlist.exists({ token });
+    isExists || (req.token = token);
 
     return next();
   } catch (error) {

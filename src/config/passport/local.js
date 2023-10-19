@@ -3,13 +3,7 @@ import { TOKEN_SECRET } from '../env';
 import User from '@/models/User';
 
 const cookieExtractor = function (req) {
-  return (
-    req.body.token ||
-    req.query.token ||
-    req.headers['x-access-token'] ||
-    req.headers['authorization']?.split(' ')[1] ||
-    req.cookies['jwt']
-  );
+  return req.token;
 };
 const opts = { secretOrKey: TOKEN_SECRET, jwtFromRequest: cookieExtractor };
 
@@ -18,7 +12,7 @@ export default function (passport) {
     new Strategy(opts, async function (jwtPayload, done) {
       try {
         const user = await User.findById(jwtPayload._id);
-
+        console.log(jwtPayload);
         if (!user) throw Error('User not found');
 
         done(null, { ...user.toAuthJSON() });
