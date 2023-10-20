@@ -23,6 +23,8 @@ const UserService = {
     const session = await mongoose.startSession();
     try {
       session.startTransaction();
+
+      if (id === followed) throw { msg: 'Error' };
       if (type)
         await Promise.all([
           UserProfile.updateOne({ user: id }, { $addToSet: { followed } }, { upsert: true }),

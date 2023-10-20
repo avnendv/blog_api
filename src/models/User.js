@@ -21,7 +21,6 @@ const User = new Schema(
     },
     fullName: {
       type: String,
-      required: true,
     },
     birthday: Date,
     avatar: String,
@@ -32,7 +31,6 @@ const User = new Schema(
     email: {
       type: String,
       unique: true,
-      required: true,
       lowercase: true,
       trim: true,
     },
