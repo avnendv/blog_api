@@ -8,10 +8,10 @@ const AuthService = {
 
     return successResponse(user.toResource());
   },
-  async login({ email, password }) {
+  async login({ userName, password }) {
     const msg = 'Username or password is incorrect';
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ $or: [{ email: userName }, { userName }] });
     if (!user) throw { msg };
 
     const isCorrectPassword = await user.isValidPassword(password);

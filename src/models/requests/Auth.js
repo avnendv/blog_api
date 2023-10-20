@@ -2,13 +2,14 @@ import Joi from 'joi';
 import { STATUS } from '@/config/constants';
 
 const obj = {
-  email: Joi.string().trim().min(4).max(50).required().email(),
+  userName: Joi.string().trim().min(4).max(50).required(),
   password: Joi.string().trim().min(4).max(50).required(),
 };
 
 export const registerRequest = (data) => {
   const rule = Joi.object({
     ...obj,
+    email: Joi.string().trim().min(4).max(50).required().email(),
     userName: Joi.string().trim().min(3).max(20).required(),
     fullName: Joi.string().trim().max(225).required(),
     birthday: Joi.date().allow(null, ''),
