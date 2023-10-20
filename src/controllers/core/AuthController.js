@@ -1,9 +1,9 @@
-import UserService from '@/services/core/User';
+import AuthService from '@/services/core/Auth';
 
-const UserController = {
+const AuthController = {
   async profile(req, res, next) {
     try {
-      const data = await UserService.profile(req.user._id);
+      const data = await AuthService.profile(req.user._id);
 
       return res.json(data);
     } catch (error) {
@@ -12,7 +12,7 @@ const UserController = {
   },
   async follow(req, res, next) {
     try {
-      const data = await UserService.follow({
+      const data = await AuthService.follow({
         id: req.user._id,
         followed: '651f8851a2b0e41c7a4f43e9',
         type: req.body.type ?? true,
@@ -32,4 +32,4 @@ const UserController = {
   },
 };
 
-export default UserController;
+export default AuthController;

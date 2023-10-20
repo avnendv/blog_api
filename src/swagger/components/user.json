@@ -64,5 +64,91 @@
         "default": true
       }
     }
+  },
+  "UserStore": {
+    "type": "object",
+    "required": ["userName", "password", "fullName", "email"],
+    "properties": {
+      "email": {
+        "type": "string",
+        "default": "avnendv@gmail.com"
+      },
+      "userName": {
+        "type": "string",
+        "default": "AVNENDV"
+      },
+      "fullName": {
+        "type": "string",
+        "default": "AVNENDV"
+      },
+      "password": {
+        "type": "string",
+        "default": "avnendv123"
+      },
+      "birthday": {
+        "type": "string",
+        "default": "2000/11/16"
+      },
+      "gender": {
+        "type": "number",
+        "default": 1,
+        "enum": [0, 1]
+      },
+      "phone": {
+        "type": "string",
+        "default": "0124334124"
+      },
+      "address": {
+        "type": "string",
+        "default": "Nam Định"
+      },
+      "avatar": {
+        "type": "string",
+        "default": "avatar"
+      }
+    }
+  },
+  "UserUpdate": {
+    "type": "object",
+    "required": ["userName", "fullName", "email"],
+    "properties": {
+      "email": {
+        "type": "string",
+        "default": "avnendv@gmail.com"
+      },
+      "userName": {
+        "type": "string",
+        "default": "AVNENDV"
+      },
+      "fullName": {
+        "type": "string",
+        "default": "AVNENDV"
+      },
+      "password": {
+        "type": "string",
+        "default": "avnendv123"
+      },
+      "birthday": {
+        "type": "string",
+        "default": "2000/11/16"
+      },
+      "gender": {
+        "type": "number",
+        "default": 1,
+        "enum": [0, 1]
+      },
+      "phone": {
+        "type": "string",
+        "default": "0124334124"
+      },
+      "address": {
+        "type": "string",
+        "default": "Nam Định"
+      },
+      "avatar": {
+        "type": "string",
+        "default": "avatar"
+      }
+    }
   }
 }

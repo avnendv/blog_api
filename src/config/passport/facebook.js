@@ -40,7 +40,7 @@ export default function (passport) {
 
         await UserProfile.findOneAndUpdate({ user: user._id }, {}, { upsert: true });
 
-        done(null, { ...user.toAuthJSON() });
+        done(null, { ...user.toResource() });
       } catch (error) {
         done(error, null);
       }

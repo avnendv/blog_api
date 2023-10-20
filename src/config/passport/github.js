@@ -46,7 +46,7 @@ export default function (passport) {
           { upsert: true }
         );
 
-        done(null, { ...user.toAuthJSON() });
+        done(null, { ...user.toResource() });
       } catch (error) {
         done(error, null);
       }

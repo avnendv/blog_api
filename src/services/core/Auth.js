@@ -3,7 +3,7 @@ import { successResponse } from '@/utils';
 import User from '@/models/User';
 import UserProfile from '@/models/UserProfile';
 
-const UserService = {
+const AuthService = {
   async profile(id) {
     const [user, userProfile] = await Promise.all([
       User.findById(id).select('-_id -password -__v -authType -createdAt -updatedAt'),
@@ -48,4 +48,4 @@ const UserService = {
   },
 };
 
-export default UserService;
+export default AuthService;

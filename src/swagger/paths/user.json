@@ -100,5 +100,92 @@
       "description": "Logout User",
       "responses": {}
     }
+  },
+  "/user": {
+    "get": {
+      "tags": ["User"],
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "summary": "List User",
+      "description": "List User",
+      "responses": {}
+    },
+    "post": {
+      "tags": ["User"],
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "summary": "Store User",
+      "description": "Store User",
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/UserStore"
+            }
+          }
+        }
+      },
+      "responses": {}
+    }
+  },
+  "/user/{id}": {
+    "put": {
+      "tags": ["User"],
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "summary": "Update User",
+      "description": "Update User",
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/UserUpdate"
+            }
+          }
+        }
+      },
+      "responses": {}
+    },
+    "delete": {
+      "tags": ["User"],
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "summary": "Delete a topic by name",
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "responses": {}
+    }
   }
 }

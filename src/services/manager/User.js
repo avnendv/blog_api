@@ -1,42 +1,65 @@
-import passport from 'passport';
+import { PER_PAGE } from '@/config/constants';
 import User from '@/models/User';
+import UserProfile from '@/models/UserProfile';
 import { successResponse } from '@/utils';
 
 const UserService = {
-  async register(data) {
+  async list(data) {
+    const { limit = PER_PAGE, page = 1, keyword = '' } = data;
+
+    const filters = {
+      $or: [
+        {
+          userName: { $regex: keyword, $options: 'i' },
+        },
+        {
+          email: { $regex: keyword, $options: 'i' },
+        },
+        {
+          phone: { $regex: keyword, $options: 'i' },
+        },
+        {
+          fullName: { $regex: keyword, $options: 'i' },
+        },
+      ],
+    };
+
+    const [users, totalDocs] = await Promise.all([
+      await User.find(filters)
+        .select('-password -facebookId -googleId -githubId')
+        .skip((parseInt(page) - 1) * parseInt(limit))
+        .limit(parseInt(limit)),
+      await User.countDocuments(filters),
+    ]);
+
+    const pagination = { limit, page, total: totalDocs, pages: Math.ceil(totalDocs / limit) };
+
+    return successResponse(users, pagination);
+  },
+  async store(data) {
     const user = await User.create(data);
 
-    return successResponse(user.toAuthJSON());
+    return successResponse(user.toResource());
   },
-  async login({ email, password }) {
-    const msg = 'Username or password is incorrect';
+  async update({ id, ...data }) {
+    const user = await User.findByIdAndUpdate(id, data, { new: true });
 
-    const user = await User.findOne({ email });
-    if (!user) throw { msg };
+    if (!user)
+      throw {
+        msg: 'Data not found!',
+      };
 
-    const isCorrectPassword = await user.isValidPassword(password);
-    if (!isCorrectPassword) throw { msg };
-
-    return (req, res, next) => {
-      const token = user.generateJWT();
-      req.token = token;
-      passport.authenticate('jwt', (err, user) => {
-        if (err) return next(err);
-        if (!user) throw { msg: 'Login error' };
-
-        const dataLogin = { ...user, token };
-        req.login(dataLogin, (err) => {
-          if (err) return next(err);
-
-          return res.json(successResponse(dataLogin));
-        });
-      })(req, res, next);
-    };
+    return successResponse(user.toResource());
   },
-  async profile(id) {
-    const user = await User.findById(id).select('-_id -password -__v -authType -createdAt -updatedAt');
+  async destroy(id) {
+    const [data] = await Promise.all([User.findByIdAndDelete(id), UserProfile.deleteOne({ user: id })]);
 
-    return successResponse(user);
+    if (!data.deletedCount)
+      throw {
+        msg: 'Data not found!',
+      };
+
+    return successResponse();
   },
 };
 

@@ -11,8 +11,8 @@ const User = new Schema(
       unique: true,
       required: true,
       trim: true,
-      index: true,
       min: 4,
+      text: true,
     },
     password: {
       type: String,
@@ -21,16 +21,17 @@ const User = new Schema(
     },
     fullName: {
       type: String,
+      text: true,
     },
     birthday: Date,
     avatar: String,
     phone: {
       type: String,
+      unique: true,
       trim: true,
     },
     email: {
       type: String,
-      unique: true,
       lowercase: true,
       trim: true,
     },
@@ -98,7 +99,7 @@ User.methods.isValidPassword = async function (hashPassword) {
   }
 };
 
-User.methods.toAuthJSON = function () {
+User.methods.toResource = function () {
   return {
     _id: this._id,
     userName: this.userName,
