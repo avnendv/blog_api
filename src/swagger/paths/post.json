@@ -120,6 +120,29 @@
       "responses": {}
     }
   },
+  "/post/{slug}": {
+    "get": {
+      "tags": ["Post"],
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "summary": "Show Post By Slug",
+      "description": "Show Post By Slug",
+      "parameters": [
+        {
+          "in": "path",
+          "name": "slug",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "responses": {}
+    }
+  },
   "/post/{id}/mark": {
     "patch": {
       "tags": ["Post"],
@@ -183,6 +206,52 @@
           }
         }
       },
+      "responses": {}
+    }
+  },
+  "/tags/{tag}": {
+    "get": {
+      "tags": ["Post"],
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "summary": "List Post by tag",
+      "description": "List Post by tag",
+      "parameters": [
+        {
+          "in": "path",
+          "name": "tag",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "responses": {}
+    }
+  },
+  "/topics/{topic}": {
+    "get": {
+      "tags": ["Post"],
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "summary": "List Post by topic",
+      "description": "List Post by topic",
+      "parameters": [
+        {
+          "in": "path",
+          "name": "topic",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
       "responses": {}
     }
   }

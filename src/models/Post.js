@@ -1,5 +1,4 @@
 import { Schema, model } from 'mongoose';
-import Tag from './Tag';
 import { POST_TYPE, PUBLISH, STATUS } from '@/config/constants';
 import { slugify } from '@/utils';
 
@@ -13,8 +12,8 @@ const Post = new Schema(
     },
     slug: {
       type: String,
-      unique: true,
       required: true,
+      unique: true,
       trim: true,
     },
     isShowTop: {
@@ -56,37 +55,8 @@ const Post = new Schema(
   }
 );
 
-Post.pre('save', async function (next) {
+Post.pre('findOneAndUpdate', function (next) {
   try {
-    await Promise.all([
-      this.model('tag')
-        .updateMany({ name: { $nin: this.tag } }, { $pull: { post: this._id } })
-        .exec(),
-      this.model('tag')
-        .updateMany({ name: { $in: this.tag } }, { $addToSet: { post: this._id } })
-        .exec(),
-    ]);
-
-    if (this.slug) {
-      this.slug = slugify(this.slug, false);
-      next();
-      return;
-    }
-
-    this.slug = slugify(this.title);
-    next();
-  } catch (error) {
-    next(error);
-  }
-});
-
-Post.pre('findOneAndUpdate', async function (next) {
-  try {
-    await Promise.all([
-      Tag.updateMany({ name: { $nin: this._update.tag } }, { $pull: { post: this._conditions._id } }).exec(),
-      Tag.updateMany({ name: { $in: this._update.tag } }, { $addToSet: { post: this._conditions._id } }).exec(),
-    ]);
-
     if (this._update.slug) {
       this._update.slug = slugify(this._update.slug, false);
       next();

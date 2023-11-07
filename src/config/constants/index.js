@@ -3,7 +3,14 @@ export const RESULT_FAIL = 0;
 export const RESULT_OK = 1;
 export const PER_PAGE = 10;
 
-export const WHITELIST_DOMAINS = ['http:localhost', 'http://127.0.0.1'];
+export const WHITELIST_DOMAINS = [
+  'http://localhost:4000',
+  'http://127.0.0.1:4000',
+  'http://localhost:4001',
+  'http://127.0.0.1:4001',
+  'http://localhost:4002',
+  'http://127.0.0.1:4002',
+];
 
 export const STATUS = {
   DELETED: -1,

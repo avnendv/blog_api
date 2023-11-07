@@ -44,9 +44,9 @@
   },
   "Login": {
     "type": "object",
-    "required": ["email", "password"],
+    "required": ["userName", "password"],
     "properties": {
-      "email": {
+      "userName": {
         "type": "string",
         "default": "avnendv@gmail.com"
       },

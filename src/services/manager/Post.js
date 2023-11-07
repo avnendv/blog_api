@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import { sanitize } from 'isomorphic-dompurify';
 import TagService from './Tag';
 import Post from '@/models/Post';
-import { successResponse } from '@/utils';
+import { slugify, successResponse } from '@/utils';
 import Tag from '@/models/Tag';
 import PostInfo from '@/models/PostInfo';
 import { PER_PAGE, POST_TYPE } from '@/config/constants';
@@ -59,6 +59,9 @@ const PostService = {
 
       await this.checkSeries(data);
 
+      if (data.slug) data.slug = slugify(data.slug, false);
+      else data.slug = slugify(data.title);
+
       const post = await new Post({ ...data, content: sanitize(data.content) });
       await post.save({
         session,
@@ -95,6 +98,7 @@ const PostService = {
         throw {
           msg: 'Data not found!',
         };
+
       await session.commitTransaction();
       session.endSession();
 
