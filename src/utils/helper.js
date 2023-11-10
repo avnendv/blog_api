@@ -13,3 +13,18 @@ export const slugify = (str, gen = true, prefix = '-') => {
     .replace(/-+/g, prefix);
   return `${slug}${gen ? prefix + generate() : ''}`;
 };
+
+export const limitExc = (limit) => {
+  const MIN_LIMIT = 6;
+  const MAX_LIMIT = 24;
+
+  const limitFormat = Number(limit) ?? MIN_LIMIT;
+
+  if (limitFormat) {
+    if (limitFormat < MIN_LIMIT) return MIN_LIMIT;
+    if (limitFormat > MAX_LIMIT) return MAX_LIMIT;
+    return limitFormat;
+  }
+
+  return MIN_LIMIT;
+};

@@ -42,6 +42,10 @@ const Post = new Schema(
         v: String,
       },
     ],
+    minRead: {
+      type: Number,
+      default: POST_TYPE.POST,
+    },
     tag: [{ type: String, ref: 'tag', field: 'name' }],
     topic: { type: Schema.Types.ObjectId, ref: 'topic', required: true },
     status: {

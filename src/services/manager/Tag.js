@@ -18,12 +18,12 @@ const TagService = {
     };
 
     const [tags, totalDocs] = await Promise.all([
-      await Tag.find(filters)
+      Tag.find(filters)
         .select('name description isShowTop status -_id')
         .sort({ isShowTop: -1 })
         .skip((parseInt(page) - 1) * parseInt(limit))
         .limit(parseInt(limit)),
-      await Tag.countDocuments(filters),
+      Tag.countDocuments(filters),
     ]);
 
     const pagination = { limit, page, total: totalDocs, pages: Math.ceil(totalDocs / limit) };

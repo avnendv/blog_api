@@ -2,7 +2,7 @@ import Joi from 'joi';
 import { POST_TYPE, PUBLISH, STATUS } from '@/config/constants';
 
 const obj = {
-  title: Joi.string().trim().min(2).max(20),
+  title: Joi.string().trim().min(2).max(50),
   content: Joi.string(),
   slug: Joi.string(),
   thumbnail: Joi.string(),
@@ -23,7 +23,7 @@ const obj = {
 export const storeRequest = (data) => {
   const rule = Joi.object({
     ...obj,
-    title: Joi.string().trim().min(2).max(20).required(),
+    title: Joi.string().trim().min(2).max(50).required(),
     content: Joi.string().required(),
     topic: Joi.string().trim().required(),
   });

@@ -7,6 +7,8 @@ const PREFIX = '/post';
 const PREFIX_TAG = '/tags';
 const PREFIX_TOPIC = '/topics';
 
+router.get(`${PREFIX}/trending`, PostController.postTrending);
+router.get(`${PREFIX}/newest`, PostController.postNewest);
 router.patch(`${PREFIX}/:id/mark`, PostInfoController.mark);
 router.patch(`${PREFIX}/:id/vote`, PostInfoController.vote);
 

@@ -1,5 +1,5 @@
 import Post from '@/models/Post';
-import { successResponse } from '@/utils';
+import { limitExc, successResponse } from '@/utils';
 
 const PostService = {
   async show(slug) {
@@ -16,18 +16,54 @@ const PostService = {
 
     return successResponse(post);
   },
-  async listPostByTag(tag) {
-    const posts = await Post.find({ tag: { $regex: tag, $options: 'i' } });
+  async postTrending({ limit = 3 }) {
+    const posts = await Post.find({ isShowTop: true })
+      .sort({ viewed: -1 })
+      .limit(limitExc(limit))
+      .select('title slug thumbnail minRead updatedAt -_id');
 
-    if (!posts)
+    if (!posts && !posts.length)
       throw {
         msg: 'Data not found!',
       };
 
     return successResponse(posts);
   },
-  async listPostByTopic(keyword) {
-    const posts = await Post.aggregate([
+  async postList({ filters, limit, page }) {
+    const limitReal = limitExc(limit);
+
+    const [posts, totalDocs] = await Promise.all([
+      Post.find(filters)
+        .sort({ updatedAt: -1 })
+        .limit(limitExc(limitReal))
+        .select('title slug thumbnail minRead updatedAt -_id')
+        .populate('author', 'avatar fullName'),
+      Post.countDocuments(filters),
+    ]);
+
+    const pagination = {
+      limit: limitReal,
+      page,
+      total: totalDocs,
+      pages: Math.ceil(totalDocs / limitReal),
+    };
+
+    return [posts, pagination];
+  },
+  async postNewest({ limit = 6, page = 1 }) {
+    const filters = { isShowTop: true };
+
+    return successResponse(...(await this.postList({ filters, limit, page })));
+  },
+  async listPostByTag({ tag, limit = 6, page = 1 }) {
+    const filters = { tag: { $regex: tag, $options: 'i' } };
+
+    return successResponse(...(await this.postList({ filters, limit, page })));
+  },
+  async listPostByTopic({ topic: keyword, limit = 6, page = 1 }) {
+    const limitReal = limitExc(limit);
+
+    const pipeline = [
       {
         $lookup: {
           from: 'topics',
@@ -44,7 +80,34 @@ const PostService = {
       },
       {
         $match: {
-          'topic.title': { $regex: keyword, $options: 'i' },
+          'topic.slug': keyword,
+        },
+      },
+    ];
+
+    const pipelineBase = [
+      ...pipeline,
+      {
+        $project: {
+          title: 1,
+        },
+      },
+    ];
+
+    const pipelineFilter = [
+      ...pipeline,
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'author',
+          foreignField: '_id',
+          as: 'author',
+        },
+      },
+      {
+        $unwind: {
+          path: '$author',
+          preserveNullAndEmptyArrays: false,
         },
       },
       {
@@ -52,26 +115,36 @@ const PostService = {
           title: 1,
           slug: 1,
           thumbnail: 1,
-          description: 1,
-          content: 1,
           publish: 1,
-          author: 1,
           viewed: 1,
-          postType: 1,
+          minRead: 1,
           series: 1,
           tag: 1,
-          'topic.title': 1,
-          'topic.slug': 1,
+          'author._id': 1,
+          'author.avatar': 1,
+          'author.fullName': 1,
+          // 'topic.title': 1,
+          // 'topic.slug': 1,
         },
       },
+    ];
+
+    const [posts, totalDocs] = await Promise.all([
+      Post.aggregate(pipelineFilter)
+        .sort({ updatedAt: -1 })
+        .skip((parseInt(page) - 1) * parseInt(limitReal))
+        .limit(limitReal),
+      Post.aggregate(pipelineBase).exec(),
     ]);
 
-    if (!posts)
-      throw {
-        msg: 'Data not found!',
-      };
+    const pagination = {
+      limit: limitReal,
+      page,
+      total: totalDocs.length,
+      pages: Math.ceil(totalDocs.length / limitReal),
+    };
 
-    return successResponse(posts);
+    return successResponse(posts, pagination);
   },
 };
 

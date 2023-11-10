@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { STATUS } from '@/config/constants';
+import { GENDER, STATUS } from '@/config/constants';
 
 const obj = {
   email: Joi.string().trim().min(4).max(50).required().email(),
@@ -8,7 +8,7 @@ const obj = {
   fullName: Joi.string().trim().max(225).required(),
   birthday: Joi.date(),
   avatar: Joi.string(),
-  gender: Joi.number().allow(null).integer(),
+  gender: Joi.number().allow(null).integer().valid(GENDER.FEMALE, GENDER.MALE),
   phone: Joi.string().trim().max(12),
   address: Joi.string().trim(),
   status: Joi.number().integer().valid(STATUS.DISABLE, STATUS.ENABLE),
