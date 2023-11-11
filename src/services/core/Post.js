@@ -22,19 +22,14 @@ const PostService = {
       .limit(limitExc(limit))
       .select('title slug thumbnail minRead updatedAt -_id');
 
-    if (!posts && !posts.length)
-      throw {
-        msg: 'Data not found!',
-      };
-
     return successResponse(posts);
   },
-  async postList({ filters, limit, page }) {
+  async postList({ filters, limit, page, order }) {
     const limitReal = limitExc(limit);
 
     const [posts, totalDocs] = await Promise.all([
       Post.find(filters)
-        .sort({ updatedAt: -1 })
+        .sort({ updatedAt: -1, ...order })
         .limit(limitExc(limitReal))
         .select('title slug thumbnail minRead updatedAt -_id')
         .populate('author', 'avatar fullName'),
@@ -51,9 +46,9 @@ const PostService = {
     return [posts, pagination];
   },
   async postNewest({ limit = 6, page = 1 }) {
-    const filters = { isShowTop: true };
+    const order = { isShowTop: -1 };
 
-    return successResponse(...(await this.postList({ filters, limit, page })));
+    return successResponse(...(await this.postList({ order, limit, page })));
   },
   async listPostByTag({ tag, limit = 6, page = 1 }) {
     const filters = { tag: { $regex: tag, $options: 'i' } };
