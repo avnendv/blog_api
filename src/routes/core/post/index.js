@@ -6,6 +6,7 @@ const router = express.Router();
 const PREFIX = '/post';
 const PREFIX_TAG = '/tags';
 const PREFIX_TOPIC = '/topics';
+const PREFIX_AUTHOR = '/author';
 
 router.get(`${PREFIX}/trending`, PostController.postTrending);
 router.get(`${PREFIX}/newest`, PostController.postNewest);
@@ -15,5 +16,6 @@ router.patch(`${PREFIX}/:id/vote`, PostInfoController.vote);
 router.get(`${PREFIX}/:slug`, PostController.show);
 router.get(`${PREFIX_TAG}/:tag`, PostController.listPostByTag);
 router.get(`${PREFIX_TOPIC}/:topic`, PostController.listPostByTopic);
+router.get(`${PREFIX_AUTHOR}/:author`, PostController.listPostByAuthor);
 
 export default router;

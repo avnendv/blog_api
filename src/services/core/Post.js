@@ -4,8 +4,8 @@ import { limitExc, successResponse } from '@/utils';
 const PostService = {
   async show(slug) {
     const post = await Post.findOne({ slug })
-      .sort({ isShowTop: -1 })
       .select('-isShowTop -status -publish -attr')
+      .populate('author', 'avatar fullName')
       .populate('topic', 'title slug')
       .populate('series', 'title');
 
@@ -19,7 +19,7 @@ const PostService = {
   async postTrending({ limit = 3 }) {
     const posts = await Post.find({ isShowTop: true })
       .sort({ viewed: -1 })
-      .limit(limitExc(limit))
+      .limit(limit)
       .select('title slug thumbnail minRead updatedAt -_id');
 
     return successResponse(posts);
@@ -30,8 +30,9 @@ const PostService = {
     const [posts, totalDocs] = await Promise.all([
       Post.find(filters)
         .sort({ updatedAt: -1, ...order })
-        .limit(limitExc(limitReal))
-        .select('title slug thumbnail minRead updatedAt -_id')
+        .skip((parseInt(page) - 1) * parseInt(limitReal))
+        .limit(limitReal)
+        .select('title slug thumbnail minRead tag updatedAt -_id')
         .populate('author', 'avatar fullName'),
       Post.countDocuments(filters),
     ]);
@@ -115,11 +116,12 @@ const PostService = {
           minRead: 1,
           series: 1,
           tag: 1,
+          updatedAt: 1,
           'author._id': 1,
           'author.avatar': 1,
           'author.fullName': 1,
-          // 'topic.title': 1,
-          // 'topic.slug': 1,
+          'topic.title': 1,
+          'topic.thumbnail': 1,
         },
       },
     ];
@@ -140,6 +142,11 @@ const PostService = {
     };
 
     return successResponse(posts, pagination);
+  },
+  async listPostByAuthor({ author: keyword, limit = 6, page = 1 }) {
+    const filters = { author: keyword };
+
+    return successResponse(...(await this.postList({ filters, limit, page })));
   },
 };
 

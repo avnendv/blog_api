@@ -52,6 +52,17 @@ const PostController = {
       next(error);
     }
   },
+  async listPostByAuthor(req, res, next) {
+    try {
+      const { author } = req.params;
+      if (!author) throw { msg: 'Parameter is required!' };
+
+      const data = await PostService.listPostByAuthor({ author, ...req.query });
+      return res.json(data);
+    } catch (error) {
+      next(error);
+    }
+  },
 };
 
 export default PostController;
