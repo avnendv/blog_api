@@ -6,7 +6,6 @@ const PostInfoController = {
   async mark(req, res, next) {
     try {
       const { id } = req.params;
-      if (!id) throw { msg: 'Parameter is required!' };
 
       const { error } = markRequest(req.body);
       if (error) throw { msg: error.details[0].message };
@@ -20,7 +19,6 @@ const PostInfoController = {
   async vote(req, res, next) {
     try {
       const { id } = req.params;
-      if (!id) throw { msg: 'Parameter is required!' };
 
       const { error } = voteRequest(req.body);
       if (error) throw { msg: error.details[0].message };

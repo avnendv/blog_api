@@ -1,4 +1,6 @@
 import Post from '@/models/Post';
+import Tag from '@/models/Tag';
+import Topic from '@/models/Topic';
 import { limitExc, successResponse } from '@/utils';
 
 const PostService = {
@@ -17,17 +19,13 @@ const PostService = {
     return successResponse(post);
   },
   async postTrending({ limit = 3 }) {
-    const posts = await Post.find({ isShowTop: true })
-      .sort({ viewed: -1 })
-      .limit(limit)
-      .select('title slug thumbnail minRead updatedAt -_id');
-
+    const posts = await Post.findTrending({ limit });
     return successResponse(posts);
   },
-  async postList({ filters, limit, page, order }) {
+  async postList({ filters, limit, page, order, otherHandle }) {
     const limitReal = limitExc(limit);
 
-    const [posts, totalDocs] = await Promise.all([
+    const [posts, totalDocs, other] = await Promise.all([
       Post.find(filters)
         .sort({ updatedAt: -1, ...order })
         .skip((parseInt(page) - 1) * parseInt(limitReal))
@@ -35,6 +33,7 @@ const PostService = {
         .select('title slug thumbnail minRead tag updatedAt -_id')
         .populate('author', 'avatar fullName'),
       Post.countDocuments(filters),
+      otherHandle,
     ]);
 
     const pagination = {
@@ -44,7 +43,7 @@ const PostService = {
       pages: Math.ceil(totalDocs / limitReal),
     };
 
-    return [posts, pagination];
+    return [posts, pagination, other];
   },
   async postNewest({ limit = 6, page = 1 }) {
     const order = { isShowTop: -1 };
@@ -52,9 +51,12 @@ const PostService = {
     return successResponse(...(await this.postList({ order, limit, page })));
   },
   async listPostByTag({ tag, limit = 6, page = 1 }) {
-    const filters = { tag: { $regex: tag, $options: 'i' } };
+    const regex = { $regex: tag, $options: 'i' };
+    const filters = { tag: regex };
+    const otherHandle = Tag.findOne({ name: regex }).select('-_id name description');
 
-    return successResponse(...(await this.postList({ filters, limit, page })));
+    const [posts, pagination, tagInfo] = await this.postList({ filters, limit, page, otherHandle });
+    return successResponse({ posts, tag: tagInfo }, pagination);
   },
   async listPostByTopic({ topic: keyword, limit = 6, page = 1 }) {
     const limitReal = limitExc(limit);
@@ -120,13 +122,12 @@ const PostService = {
           'author._id': 1,
           'author.avatar': 1,
           'author.fullName': 1,
-          'topic.title': 1,
-          'topic.thumbnail': 1,
         },
       },
     ];
 
-    const [posts, totalDocs] = await Promise.all([
+    const [topic, posts, totalDocs] = await Promise.all([
+      Topic.findOne({ slug: keyword }).select('-_id title slug thumbnail description'),
       Post.aggregate(pipelineFilter)
         .sort({ updatedAt: -1 })
         .skip((parseInt(page) - 1) * parseInt(limitReal))
@@ -141,12 +142,32 @@ const PostService = {
       pages: Math.ceil(totalDocs.length / limitReal),
     };
 
-    return successResponse(posts, pagination);
+    return successResponse({ topic, posts }, pagination);
   },
   async listPostByAuthor({ author: keyword, limit = 6, page = 1 }) {
     const filters = { author: keyword };
 
-    return successResponse(...(await this.postList({ filters, limit, page })));
+    const limitReal = limitExc(limit);
+
+    const [trending, posts, totalDocs] = await Promise.all([
+      Post.findTrending({ limit: 3, filters }),
+      Post.find(filters)
+        .sort({ updatedAt: -1 })
+        .skip((parseInt(page) - 1) * parseInt(limitReal))
+        .limit(limitReal)
+        .select('title slug thumbnail minRead tag updatedAt -_id')
+        .populate('author', 'avatar fullName'),
+      Post.countDocuments(filters),
+    ]);
+
+    const pagination = {
+      limit: limitReal,
+      page,
+      total: totalDocs,
+      pages: Math.ceil(totalDocs / limitReal),
+    };
+
+    return successResponse({ trending, posts }, pagination);
   },
 };
 

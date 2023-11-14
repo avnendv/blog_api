@@ -11,7 +11,7 @@ export const registerRequest = (data) => {
     ...obj,
     email: Joi.string().trim().min(4).max(50).required().email(),
     userName: Joi.string().trim().min(3).max(20).required(),
-    fullName: Joi.string().trim().max(225).required(),
+    fullName: Joi.string().trim().max(30).required(),
     birthday: Joi.date().allow(null, ''),
     avatar: Joi.string().allow(null, ''),
     gender: Joi.number().allow(null).integer(),

@@ -24,7 +24,6 @@ const UserController = {
   async update(req, res, next) {
     try {
       const { id } = req.params;
-      if (!id) throw { msg: 'Parameter is required!' };
 
       const { error } = updateRequest(req.body);
       if (error) throw { msg: error.details[0].message };
@@ -38,7 +37,6 @@ const UserController = {
   async destroy(req, res, next) {
     try {
       const { id } = req.params;
-      if (!id) throw { msg: 'Parameter is required!' };
 
       const data = await UserService.destroy(id);
       return res.json(data);

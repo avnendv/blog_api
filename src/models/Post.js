@@ -86,6 +86,13 @@ Post.methods.toResource = function () {
   };
 };
 
+Post.statics.findTrending = function ({ limit = 3, filters = {} }) {
+  return this.find(filters)
+    .sort({ viewed: -1, isShowTop: -1 })
+    .limit(limit)
+    .select('title slug thumbnail minRead updatedAt -_id');
+};
+
 Post.index({ title: 1 });
 
 export default model('post', Post);

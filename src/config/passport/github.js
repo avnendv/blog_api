@@ -46,7 +46,7 @@ export default function (passport) {
           { upsert: true }
         );
 
-        done(null, { ...user.toResource() });
+        done(null, { ...user.toResource(), token: user.generateJWT() });
       } catch (error) {
         done(error, null);
       }

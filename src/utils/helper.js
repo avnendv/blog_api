@@ -15,7 +15,7 @@ export const slugify = (str, gen = true, prefix = '-') => {
 };
 
 export const limitExc = (limit) => {
-  const MIN_LIMIT = 6;
+  const MIN_LIMIT = 3;
   const MAX_LIMIT = 24;
 
   const limitFormat = Number(limit) ?? MIN_LIMIT;

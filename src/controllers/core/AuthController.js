@@ -1,3 +1,5 @@
+import { AV_APP, A_SECOND } from '@/config/constants';
+import { APP_CLIENT } from '@/config/env';
 import AuthService from '@/services/core/Auth';
 
 const AuthController = {
@@ -25,7 +27,13 @@ const AuthController = {
   },
   async authCallback(req, res, next) {
     try {
-      res.redirect('/');
+      const { token, ...userInfo } = req.user;
+      const cookieOptions = { maxAge: A_SECOND * 60 * 60 * 24 * 7, secure: true };
+
+      res.cookie(AV_APP.TOKEN, token, cookieOptions);
+      res.cookie(AV_APP.USER_INFO, JSON.stringify(userInfo), cookieOptions);
+
+      res.redirect(`${APP_CLIENT}/login`);
     } catch (error) {
       next(error);
     }

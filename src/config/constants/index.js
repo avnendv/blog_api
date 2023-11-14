@@ -3,6 +3,11 @@ export const RESULT_FAIL = 0;
 export const RESULT_OK = 1;
 export const PER_PAGE = 10;
 
+export const AV_APP = {
+  TOKEN: 'av__token',
+  USER_INFO: 'av__user-info',
+};
+
 export const WHITELIST_DOMAINS = [
   'http://localhost:4000',
   'http://127.0.0.1:4000',

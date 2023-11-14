@@ -44,7 +44,7 @@ const AuthController = {
         if (error) throw { msg: error };
         req.session.destroy();
 
-        await Backlist.create({ token });
+        Backlist.create({ token });
 
         return res.json(successResponse());
       });

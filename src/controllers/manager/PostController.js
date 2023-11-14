@@ -21,7 +21,6 @@ const PostController = {
   async show(req, res, next) {
     try {
       const { id } = req.params;
-      if (!id) throw { msg: 'Parameter is required!' };
 
       const data = await PostService.show(id);
       return res.json(data);
@@ -43,7 +42,6 @@ const PostController = {
   async update(req, res, next) {
     try {
       const { id } = req.params;
-      if (!id) throw { msg: 'Parameter is required!' };
 
       const { error } = updateRequest(req.body);
       if (error) throw { msg: error.details[0].message };
@@ -57,7 +55,6 @@ const PostController = {
   async destroy(req, res, next) {
     try {
       const { id } = req.params;
-      if (!id) throw { msg: 'Parameter is required!' };
 
       const data = await PostService.destroy(id);
       return res.json(data);

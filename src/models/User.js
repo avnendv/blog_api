@@ -27,7 +27,6 @@ const User = new Schema(
     avatar: String,
     phone: {
       type: String,
-      unique: true,
       trim: true,
     },
     email: {
