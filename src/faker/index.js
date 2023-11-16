@@ -2,6 +2,7 @@
 import { POSTS } from './Post';
 import Post from '@/models/Post';
 // import User from '@/models/User';
+import '@/config/discord';
 
 export default async (isFaker) => {
   if (isFaker) {

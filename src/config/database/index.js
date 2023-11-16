@@ -1,11 +1,11 @@
 import mongoose from 'mongoose';
-import { MONGO_DB_NAME, MONGO_URL, NODE_ENV } from '../env';
-import { A_SECOND } from '../constants';
+import { MONGO_DB_NAME, MONGO_URL } from '../env';
+import { A_SECOND, IS_PROD } from '../constants';
 
 /**
  * It connects to the database
  */
-const isDEV = NODE_ENV === 'development';
+
 const MAX_CONNECT_RETRY = 3;
 
 export async function connect(connectCount = 0) {
@@ -22,7 +22,7 @@ export async function connect(connectCount = 0) {
     const response = await mongoose.connect(MONGO_URL, options);
     console.log('DB::: connect successfully!');
 
-    if (isDEV) {
+    if (!IS_PROD) {
       const models = mongoose.models;
       await Promise.all(
         Object.keys(models).map((modelName) => {
@@ -36,7 +36,7 @@ export async function connect(connectCount = 0) {
     }
     return response;
   } catch (e) {
-    console.log('DB::: connect failure!');
+    console.error('DB::: connect failure!');
 
     // retry connect db when connect fail
     if (connectCount < MAX_CONNECT_RETRY) {

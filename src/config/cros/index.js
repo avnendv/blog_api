@@ -8,7 +8,7 @@ export const corsOptions = {
     if (!origin && NODE_ENV === 'development') return callback(null, true);
 
     // check domain is in whitelist domain
-    if (WHITELIST_DOMAINS.includes(origin)) return callback(null, true);
+    if (WHITELIST_DOMAINS.filter(Boolean).includes(origin)) return callback(null, true);
 
     // If the domain is not accepted, an error is returned
     return callback(new ApiError(StatusCodes.FORBIDDEN, `${origin} not allowed by our CORS Policy.`));

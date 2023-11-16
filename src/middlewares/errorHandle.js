@@ -1,6 +1,8 @@
 import { StatusCodes } from 'http-status-codes';
 import logger from '@/logs/winston';
 import { errorResponse } from '@/utils';
+import DiscordService from '@/config/discord';
+import { IS_PROD } from '@/config/constants';
 
 const infoStack = (stack) => {
   const stackLines = stack?.split('\n');
@@ -35,7 +37,14 @@ export const errorHandle = (err, _req, res, _next) => {
   const error = errorResponse(responseError);
   const { isLogger, ...errorData } = error;
 
-  isLogger && logger.error(JSON.stringify(errorData));
+  if (isLogger) {
+    logger.error(JSON.stringify(errorData));
 
-  return res.json({ result: errorData.result, msg: errorData.message });
+    DiscordService.sendToFormatCode({ ...errorData, stack: { ...errorData.stack, full: err.stack } });
+  }
+
+  return res.json({
+    result: errorData.result,
+    msg: IS_PROD ? 'Something went wrong! Please check the data again!' : errorData.message,
+  });
 };
