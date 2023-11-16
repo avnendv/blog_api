@@ -2,6 +2,7 @@ import { PER_PAGE } from '@/config/constants';
 import User from '@/models/User';
 import UserProfile from '@/models/UserProfile';
 import { successResponse } from '@/utils';
+import ApiError from '@/utils/ApiError';
 
 const UserService = {
   async list(data) {
@@ -44,20 +45,14 @@ const UserService = {
   async update({ id, ...data }) {
     const user = await User.findByIdAndUpdate(id, data, { new: true });
 
-    if (!user)
-      throw {
-        msg: 'Data not found!',
-      };
+    if (!user) throw new ApiError('Data not found!');
 
     return successResponse(user.toResource());
   },
   async destroy(id) {
     const [data] = await Promise.all([User.findByIdAndDelete(id), UserProfile.deleteOne({ user: id })]);
 
-    if (!data.deletedCount)
-      throw {
-        msg: 'Data not found!',
-      };
+    if (!data.deletedCount) throw new ApiError('Data not found!');
 
     return successResponse();
   },

@@ -1,5 +1,6 @@
 import { storeRequest, updateRequest } from '@/models/requests/Post';
 import PostService from '@/services/manager/Post';
+import ApiError from '@/utils/ApiError';
 
 const PostController = {
   async list(req, res, next) {
@@ -31,7 +32,7 @@ const PostController = {
   async store(req, res, next) {
     try {
       const { error } = storeRequest(req.body);
-      if (error) throw { msg: error.details[0].message };
+      if (error) throw new ApiError(error.details[0].message);
 
       const data = await PostService.store({ author: req.user._id, ...req.body });
       return res.json(data);
@@ -44,7 +45,7 @@ const PostController = {
       const { id } = req.params;
 
       const { error } = updateRequest(req.body);
-      if (error) throw { msg: error.details[0].message };
+      if (error) throw new ApiError(error.details[0].message);
 
       const data = await PostService.update({ id, ...req.body });
       return res.json(data);

@@ -1,5 +1,6 @@
 import { storeRequest, updateRequest } from '@/models/requests/User';
 import UserService from '@/services/manager/User';
+import ApiError from '@/utils/ApiError';
 
 const UserController = {
   async list(req, res, next) {
@@ -13,7 +14,7 @@ const UserController = {
   async store(req, res, next) {
     try {
       const { error } = storeRequest(req.body);
-      if (error) throw { msg: error.details[0].message };
+      if (error) throw new ApiError(error.details[0].message);
 
       const data = await UserService.store(req.body);
       return res.json(data);
@@ -26,7 +27,7 @@ const UserController = {
       const { id } = req.params;
 
       const { error } = updateRequest(req.body);
-      if (error) throw { msg: error.details[0].message };
+      if (error) throw new ApiError(error.details[0].message);
 
       const data = await UserService.update({ id, ...req.body });
       return res.json(data);

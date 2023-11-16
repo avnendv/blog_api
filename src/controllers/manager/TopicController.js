@@ -1,5 +1,6 @@
 import { storeRequest, updateRequest } from '@/models/requests/Topic';
 import TopicService from '@/services/manager/Topic';
+import ApiError from '@/utils/ApiError';
 
 const TopicController = {
   async list(req, res, next) {
@@ -13,7 +14,7 @@ const TopicController = {
   async store(req, res, next) {
     try {
       const { error } = storeRequest(req.body);
-      if (error) throw { msg: error.details[0].message };
+      if (error) throw new ApiError(error.details[0].message);
 
       const data = await TopicService.store(req.body);
       return res.json(data);
@@ -26,7 +27,7 @@ const TopicController = {
       const { id } = req.params;
 
       const { error } = updateRequest(req.body);
-      if (error) throw { msg: error.details[0].message };
+      if (error) throw new ApiError(error.details[0].message);
 
       const data = await TopicService.update({ id, ...req.body });
       return res.json(data);

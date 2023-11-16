@@ -1,5 +1,6 @@
 import PostInfo from '@/models/PostInfo';
 import { successResponse } from '@/utils';
+import ApiError from '@/utils/ApiError';
 
 const PostInfoService = {
   async mark(postId, userId, mark = true) {
@@ -14,10 +15,7 @@ const PostInfoService = {
       { new: true, upsert: true }
     );
 
-    if (!postInfo)
-      throw {
-        msg: 'Data not found!',
-      };
+    if (!postInfo) throw new ApiError('Data not found!');
 
     return successResponse();
   },
@@ -33,10 +31,7 @@ const PostInfoService = {
       { new: true, upsert: true }
     );
 
-    if (!postInfo)
-      throw {
-        msg: 'Data not found!',
-      };
+    if (!postInfo) throw new ApiError('Data not found!');
 
     return successResponse();
   },

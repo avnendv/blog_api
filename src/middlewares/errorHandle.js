@@ -1,18 +1,41 @@
+import { StatusCodes } from 'http-status-codes';
 import logger from '@/logs/winston';
 import { errorResponse } from '@/utils';
 
+const infoStack = (stack) => {
+  const stackLines = stack?.split('\n');
+  if (stackLines && stackLines.length > 1) {
+    // Get the second line in the stack (usually contains fileName and lineNumber)
+    const secondLine = stackLines[1].trim();
+
+    // Parse information from the stack stream
+    const match = /\((.*):(\d+):(\d+)\)/.exec(secondLine);
+
+    if (match) {
+      const raw = match[1];
+      const fileName = match[1];
+      const lineNumber = match[2];
+
+      return { raw, fileName, lineNumber };
+    }
+  }
+  return { raw: null, fileName: null, lineNumber: null };
+};
+
 // eslint-disable-next-line no-unused-vars
 export const errorHandle = (err, _req, res, _next) => {
-  const message = JSON.stringify(err?.toString() ?? '');
-  let msg;
+  if (!err.statusCode) err.statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
 
-  if (message?.includes('ValidationError')) msg = 'ValidationError';
-  if (message?.includes('E11000')) msg = 'E11000';
+  const responseError = {
+    statusCode: err.statusCode,
+    message: err.message || StatusCodes[err.statusCode], // If there is an error without a message, get the standard ReasonPhrases according to the Status Code
+    stack: infoStack(err.stack),
+  };
 
-  const error = errorResponse({ message, msg: err.msg ?? msg ?? 'Has some error! Please check your data' });
+  const error = errorResponse(responseError);
   const { isLogger, ...errorData } = error;
 
-  isLogger && logger.error(JSON.stringify(error));
+  isLogger && logger.error(JSON.stringify(errorData));
 
-  return res.json({ result: errorData.result, msg: errorData.msg });
+  return res.json({ result: errorData.result, msg: errorData.message });
 };

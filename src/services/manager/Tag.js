@@ -1,6 +1,7 @@
 import { PER_PAGE } from '@/config/constants';
 import Tag from '@/models/Tag';
 import { successResponse } from '@/utils';
+import ApiError from '@/utils/ApiError';
 
 const TagService = {
   async list(data) {
@@ -38,19 +39,13 @@ const TagService = {
   async update({ id, ...data }) {
     const tag = await Tag.findOneAndUpdate({ name: id }, data, { new: true });
 
-    if (!tag)
-      throw {
-        msg: 'Data not found!',
-      };
+    if (!tag) throw new ApiError('Data not found!');
 
     return successResponse(tag.toResource());
   },
   async destroy(name) {
     const data = await Tag.deleteOne({ name });
-    if (data.deletedCount === 0)
-      throw {
-        msg: 'Data not found!',
-      };
+    if (data.deletedCount === 0) throw new ApiError('Data not found!');
 
     return successResponse();
   },

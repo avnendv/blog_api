@@ -2,6 +2,7 @@ import Post from '@/models/Post';
 import Tag from '@/models/Tag';
 import Topic from '@/models/Topic';
 import { limitExc, successResponse } from '@/utils';
+import ApiError from '@/utils/ApiError';
 
 const PostService = {
   async show(slug) {
@@ -11,10 +12,7 @@ const PostService = {
       .populate('topic', 'title slug')
       .populate('series', 'title');
 
-    if (!post)
-      throw {
-        msg: 'Data not found!',
-      };
+    if (!post) throw new ApiError('Data not found!');
 
     return successResponse(post);
   },

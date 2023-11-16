@@ -2,12 +2,13 @@ import Backlist from '@/models/TokenBacklist';
 import { changePasswordRequest, loginRequest, registerRequest } from '@/models/requests/Auth';
 import AuthService from '@/services/manager/Auth';
 import { successResponse } from '@/utils';
+import ApiError from '@/utils/ApiError';
 
 const AuthController = {
   async register(req, res, next) {
     try {
       const { error } = registerRequest(req.body);
-      if (error) throw { msg: error.details[0].message };
+      if (error) throw new ApiError(error.details[0].message);
 
       const data = await AuthService.register(req.body);
 
@@ -19,7 +20,7 @@ const AuthController = {
   async login(req, res, next) {
     try {
       const { error } = loginRequest(req.body);
-      if (error) throw { msg: error.details[0].message };
+      if (error) throw new ApiError(error.details[0].message);
 
       const data = await AuthService.login(req.body);
 
@@ -66,7 +67,7 @@ const AuthController = {
   async changePassword(req, res, next) {
     try {
       const { error } = changePasswordRequest(req.body);
-      if (error) throw { msg: error.details[0].message };
+      if (error) throw new ApiError(error.details[0].message);
 
       const data = await AuthService.changePassword(req.user._id, req.body);
 

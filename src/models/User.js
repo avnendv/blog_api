@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { AUTH_TYPE, GENDER, STATUS } from '@/config/constants';
 import { TOKEN_EXPIRE, TOKEN_SECRET } from '@/config/env';
+import ApiError from '@/utils/ApiError';
 
 const User = new Schema(
   {
@@ -94,7 +95,7 @@ User.methods.isValidPassword = async function (hashPassword) {
   try {
     return await bcrypt.compare(hashPassword, this.password);
   } catch (error) {
-    throw new Error(error);
+    throw new ApiError(error.message);
   }
 };
 

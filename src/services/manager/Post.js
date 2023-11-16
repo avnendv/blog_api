@@ -6,6 +6,7 @@ import { slugify, successResponse } from '@/utils';
 import Tag from '@/models/Tag';
 import PostInfo from '@/models/PostInfo';
 import { PER_PAGE, POST_TYPE } from '@/config/constants';
+import ApiError from '@/utils/ApiError';
 
 const PostService = {
   async list(data) {
@@ -94,10 +95,7 @@ const PostService = {
         { new: true, session }
       );
 
-      if (!post)
-        throw {
-          msg: 'Data not found!',
-        };
+      if (!post) throw new ApiError('Data not found!');
 
       await session.commitTransaction();
       session.endSession();
@@ -121,10 +119,7 @@ const PostService = {
         PostInfo.deleteMany({ post: id }),
       ]);
 
-      if (!data)
-        throw {
-          msg: 'Data not found!',
-        };
+      if (!data) throw new ApiError('Data not found!');
       await session.commitTransaction();
       session.endSession();
 
@@ -153,12 +148,12 @@ const PostService = {
   },
   async checkSeries(data, id = null) {
     if (data.postType && data.series) {
-      if (data.series === id) throw { msg: 'Series and Post is equal' };
+      if (data.series === id) throw new ApiError('Series and Post is equal!');
       if ([POST_TYPE.SERIES, POST_TYPE.POST].includes(data.postType)) delete data.series;
       else {
         const series = await Post.exists({ _id: data.series, postType: POST_TYPE.SERIES });
 
-        if (!series) throw { msg: 'Series not exists' };
+        if (!series) throw new ApiError('Series not exists!');
       }
     }
   },

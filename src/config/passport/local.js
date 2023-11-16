@@ -1,6 +1,7 @@
 import { Strategy } from 'passport-jwt';
 import { TOKEN_SECRET } from '../env';
 import User from '@/models/User';
+import ApiError from '@/utils/ApiError';
 
 const cookieExtractor = function (req) {
   return req.token;
@@ -12,7 +13,7 @@ export default function (passport) {
     new Strategy(opts, async function (jwtPayload, done) {
       try {
         const user = await User.findById(jwtPayload._id);
-        if (!user) throw Error('User not found');
+        if (!user) throw new ApiError('User not found');
 
         done(null, { ...user.toResource() });
       } catch (error) {

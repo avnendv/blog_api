@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import { successResponse } from '@/utils';
 import User from '@/models/User';
 import UserProfile from '@/models/UserProfile';
+import ApiError from '@/utils/ApiError';
 
 const AuthService = {
   async profile(id) {
@@ -24,7 +25,7 @@ const AuthService = {
     try {
       session.startTransaction();
 
-      if (id === followed) throw { msg: 'Error' };
+      if (id === followed) throw new ApiError('Error!');
       if (type)
         await Promise.all([
           UserProfile.updateOne({ user: id }, { $addToSet: { followed } }, { upsert: true }),

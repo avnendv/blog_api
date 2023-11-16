@@ -1,6 +1,7 @@
 import { PER_PAGE } from '@/config/constants';
 import Topic from '@/models/Topic';
 import { successResponse } from '@/utils';
+import ApiError from '@/utils/ApiError';
 
 const TopicService = {
   async list(data) {
@@ -34,19 +35,13 @@ const TopicService = {
   async update({ id, ...data }) {
     const topic = await Topic.findByIdAndUpdate(id, data, { new: true });
 
-    if (!topic)
-      throw {
-        msg: 'Data not found!',
-      };
+    if (!topic) throw new ApiError('Data not found!');
 
     return successResponse(topic.toResource());
   },
   async destroy(id) {
     const data = await Topic.findByIdAndRemove(id);
-    if (!data)
-      throw {
-        msg: 'Data not found!',
-      };
+    if (!data) throw new ApiError('Data not found!');
 
     return successResponse();
   },
