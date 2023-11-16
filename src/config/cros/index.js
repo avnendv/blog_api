@@ -1,17 +1,16 @@
 import { StatusCodes } from 'http-status-codes';
-import { WHITELIST_DOMAINS } from '../constants';
-import { NODE_ENV } from '../env';
+import { IS_PROD, WHITELIST_DOMAINS } from '../constants';
 import ApiError from '@/utils/ApiError';
 
 export const corsOptions = {
   origin(origin, callback) {
-    if (!origin && NODE_ENV === 'development') return callback(null, true);
+    if (!origin && !IS_PROD) return callback(null, true);
 
     // check domain is in whitelist domain
     if (WHITELIST_DOMAINS.filter(Boolean).includes(origin)) return callback(null, true);
 
     // If the domain is not accepted, an error is returned
-    return callback(new ApiError(StatusCodes.FORBIDDEN, `${origin} not allowed by our CORS Policy.`));
+    return callback(new ApiError(`${origin} not allowed by our CORS Policy.`, StatusCodes.FORBIDDEN));
   },
 
   // Some legacy browsers (IE11, various SmartTVs) choke on 204
