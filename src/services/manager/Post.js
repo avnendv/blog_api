@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import { sanitize } from 'isomorphic-dompurify';
 import TagService from './Tag';
 import Post from '@/models/Post';
-import { slugify, successResponse } from '@/utils';
+import { calculateReadingTime, slugify, successResponse } from '@/utils';
 import Tag from '@/models/Tag';
 import PostInfo from '@/models/PostInfo';
 import { PER_PAGE, POST_TYPE } from '@/config/constants';
@@ -63,7 +63,11 @@ const PostService = {
       if (data.slug) data.slug = slugify(data.slug, false);
       else data.slug = slugify(data.title);
 
-      const post = await new Post({ ...data, content: sanitize(data.content) });
+      const post = await new Post({
+        ...data,
+        content: sanitize(data.content),
+        minRead: calculateReadingTime(data.content),
+      });
       await post.save({
         session,
         new: true,
@@ -91,7 +95,7 @@ const PostService = {
 
       const post = await Post.findByIdAndUpdate(
         id,
-        { ...data, content: sanitize(data.content) },
+        { ...data, content: sanitize(data.content), minRead: calculateReadingTime(data.content) },
         { new: true, session }
       );
 
@@ -130,17 +134,6 @@ const PostService = {
 
       throw error;
     }
-  },
-  async upView(id) {
-    const post = await Post.findByIdAndUpdate(
-      id,
-      {
-        $inc: { viewed: 1 },
-      },
-      { new: true }
-    );
-
-    return !!post;
   },
   async seriesByAuthor(author) {
     const data = await Post.find({ postType: POST_TYPE.SERIES, author }).select('title');

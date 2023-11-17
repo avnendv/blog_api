@@ -3,6 +3,14 @@ import { successResponse } from '@/utils';
 import ApiError from '@/utils/ApiError';
 
 const PostInfoService = {
+  async info(postId, userId) {
+    const postInfo = await PostInfo.findOne({
+      post: postId,
+      user: userId,
+    });
+
+    return successResponse(postInfo);
+  },
   async mark(postId, userId, mark = true) {
     const postInfo = await PostInfo.findOneAndUpdate(
       {

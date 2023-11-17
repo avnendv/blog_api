@@ -66,8 +66,7 @@ Post.pre('findOneAndUpdate', function (next) {
       next();
       return;
     }
-
-    this._update.slug = slugify(this._update.title);
+    this._update.title && (this._update.slug = slugify(this._update.title));
     next();
   } catch (error) {
     next(error);
@@ -88,9 +87,22 @@ Post.methods.toResource = function () {
 
 Post.statics.findTrending = function ({ limit = 3, filters = {} }) {
   return this.find(filters)
-    .sort({ viewed: -1, isShowTop: -1 })
+    .sort({ viewed: -1 })
+    .sort({ isShowTop: -1 })
     .limit(limit)
-    .select('title slug thumbnail minRead updatedAt -_id');
+    .select('title slug thumbnail minRead updatedAt viewed -_id');
+};
+
+Post.statics.upView = async function (args) {
+  const post = await this.findOneAndUpdate(
+    args,
+    {
+      $inc: { viewed: 1 },
+    },
+    { new: true, timestamps: false }
+  );
+
+  return !!post;
 };
 
 Post.index({ title: 1 });

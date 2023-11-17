@@ -28,3 +28,17 @@ export const limitExc = (limit) => {
 
   return MIN_LIMIT;
 };
+
+export const calculateReadingTime = (content) => {
+  // Let's say each word takes about 0.25 seconds to read
+  const wordsPerMinute = 200; // Average number of words a reader can read in 1 minute
+
+  const wordCount = content.split(/\s+/).length; // Count the number of words in the content
+
+  const readingTimeInMinutes = wordCount / wordsPerMinute;
+
+  // Round up to get an integer result
+  const readingTimeInMinutesRounded = Math.ceil(readingTimeInMinutes);
+
+  return readingTimeInMinutesRounded;
+};

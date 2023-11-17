@@ -13,6 +13,7 @@ const PostService = {
       .populate('series', 'title');
 
     if (!post) throw new ApiError('Data not found!');
+    Post.upView({ slug });
 
     return successResponse(post);
   },
