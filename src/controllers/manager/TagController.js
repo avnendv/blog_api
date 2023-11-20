@@ -1,5 +1,5 @@
-import { storeRequest, updateRequest } from '@/models/requests/Tag';
-import TagService from '@/services/manager/Tag';
+import { storeRequest, updateRequest } from '@/models/requests/TagRequest';
+import TagService from '@/services/manager/TagService';
 import ApiError from '@/utils/ApiError';
 
 const TagController = {

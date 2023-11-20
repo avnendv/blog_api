@@ -1,6 +1,6 @@
 import Backlist from '@/models/TokenBacklist';
-import { changePasswordRequest, loginRequest, registerRequest } from '@/models/requests/Auth';
-import AuthService from '@/services/manager/Auth';
+import { changePasswordRequest, loginRequest, registerRequest } from '@/models/requests/AuthRequest';
+import AuthService from '@/services/manager/AuthService';
 import { successResponse } from '@/utils';
 import ApiError from '@/utils/ApiError';
 

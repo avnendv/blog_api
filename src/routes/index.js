@@ -1,9 +1,8 @@
 import ClientRouter from './core';
 import ManagerRouter from './manager';
-import { notfoundHandle } from '@/middlewares/404Handle';
 import HelloWorldController from '@/controllers/HelloWorldController';
 
-import { errorHandle } from '@/middlewares';
+import { errorHandle, notfoundHandle } from '@/middlewares';
 
 const router = (app) => {
   const v1Prefix = '/api/v1';

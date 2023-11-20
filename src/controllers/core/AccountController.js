@@ -1,4 +1,4 @@
-import AccountService from '@/services/core/Account';
+import AccountService from '@/services/core/AccountService';
 
 const AccountController = {
   async bookmark(req, res, next) {

@@ -1,4 +1,4 @@
-import PostService from '@/services/core/Post';
+import PostService from '@/services/core/PostService';
 
 const PostController = {
   async show(req, res, next) {

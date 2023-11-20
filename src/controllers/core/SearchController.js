@@ -1,4 +1,4 @@
-import SearchService from '@/services/core/Search';
+import SearchService from '@/services/core/SearchService';
 
 const SearchController = {
   async search(req, res, next) {

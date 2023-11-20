@@ -1,5 +1,5 @@
-import { storeRequest, updateRequest } from '@/models/requests/User';
-import UserService from '@/services/manager/User';
+import { storeRequest, updateRequest } from '@/models/requests/UserRequest';
+import UserService from '@/services/manager/UserService';
 import ApiError from '@/utils/ApiError';
 
 const UserController = {

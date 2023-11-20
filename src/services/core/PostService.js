@@ -1,6 +1,7 @@
 import Post from '@/models/Post';
 import Tag from '@/models/Tag';
 import Topic from '@/models/Topic';
+import User from '@/models/User';
 import { limitExc, successResponse } from '@/utils';
 import ApiError from '@/utils/ApiError';
 
@@ -148,7 +149,7 @@ const PostService = {
 
     const limitReal = limitExc(limit);
 
-    const [trending, posts, totalDocs] = await Promise.all([
+    const [trending, posts, author, totalDocs] = await Promise.all([
       Post.findTrending({ limit: 3, filters }),
       Post.find(filters)
         .sort({ updatedAt: -1 })
@@ -156,6 +157,7 @@ const PostService = {
         .limit(limitReal)
         .select('title slug thumbnail minRead tag updatedAt -_id')
         .populate('author', 'avatar fullName'),
+      await User.findById(keyword).select('avatar fullName'),
       Post.countDocuments(filters),
     ]);
 
@@ -166,7 +168,7 @@ const PostService = {
       pages: Math.ceil(totalDocs / limitReal),
     };
 
-    return successResponse({ trending, posts }, pagination);
+    return successResponse({ trending, posts, author }, pagination);
   },
 };
 

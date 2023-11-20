@@ -1,4 +1,4 @@
-import TopicService from '@/services/core/Topic';
+import TopicService from '@/services/core/TopicService';
 
 const TopicController = {
   async list(req, res, next) {

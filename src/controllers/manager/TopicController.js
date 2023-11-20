@@ -1,5 +1,5 @@
-import { storeRequest, updateRequest } from '@/models/requests/Topic';
-import TopicService from '@/services/manager/Topic';
+import { storeRequest, updateRequest } from '@/models/requests/TopicRequest';
+import TopicService from '@/services/manager/TopicService';
 import ApiError from '@/utils/ApiError';
 
 const TopicController = {

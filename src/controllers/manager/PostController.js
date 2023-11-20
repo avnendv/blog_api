@@ -1,5 +1,5 @@
-import { storeRequest, updateRequest } from '@/models/requests/Post';
-import PostService from '@/services/manager/Post';
+import { storeRequest, updateRequest } from '@/models/requests/PostRequest';
+import PostService from '@/services/manager/PostService';
 import ApiError from '@/utils/ApiError';
 
 const PostController = {

@@ -1,6 +1,6 @@
 import { VOTE } from '@/config/constants';
-import { markRequest, voteRequest } from '@/models/requests/PostInfo';
-import PostInfoService from '@/services/core/PostInfo';
+import { markRequest, voteRequest } from '@/models/requests/PostInfoRequest';
+import PostInfoService from '@/services/core/PostInfoService';
 import ApiError from '@/utils/ApiError';
 
 const PostInfoController = {

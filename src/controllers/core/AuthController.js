@@ -1,6 +1,6 @@
 import { AV_APP, A_SECOND } from '@/config/constants';
 import { APP_CLIENT } from '@/config/env';
-import AuthService from '@/services/core/Auth';
+import AuthService from '@/services/core/AuthService';
 
 const AuthController = {
   async profile(req, res, next) {

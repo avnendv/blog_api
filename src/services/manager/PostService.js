@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { sanitize } from 'isomorphic-dompurify';
-import TagService from './Tag';
+import TagService from './TagService';
 import Post from '@/models/Post';
 import { calculateReadingTime, slugify, successResponse } from '@/utils';
 import Tag from '@/models/Tag';
