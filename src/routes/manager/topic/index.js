@@ -7,9 +7,7 @@ const router = express.Router();
 const PREFIX = '/topic';
 
 router.use('*', verifyToken, passport.authenticate('jwt'));
-router.get(`${PREFIX}`, TopicController.list);
-router.post(`${PREFIX}`, TopicController.store);
-router.put(`${PREFIX}/:id`, TopicController.update);
-router.delete(`${PREFIX}/:id`, TopicController.destroy);
+router.route(`${PREFIX}`).get(TopicController.list).post(TopicController.store);
+router.route(`${PREFIX}/:id`).put(TopicController.update).delete(TopicController.destroy);
 
 export default router;

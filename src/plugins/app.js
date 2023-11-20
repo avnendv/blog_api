@@ -6,9 +6,9 @@ export const setupApp = (app) => {
   // setup libs
   setupLibs(app);
 
-  // register routes
-  router(app);
-
   // register swagger
   swagger(app);
+
+  // register routes
+  router(app);
 };

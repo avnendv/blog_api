@@ -7,9 +7,7 @@ const router = express.Router();
 const PREFIX = '/tag';
 
 router.use('*', verifyToken, passport.authenticate('jwt'));
-router.get(`${PREFIX}`, TagController.list);
-router.post(`${PREFIX}`, TagController.store);
-router.put(`${PREFIX}/:id`, TagController.update);
-router.delete(`${PREFIX}/:id`, TagController.destroy);
+router.route(`${PREFIX}`).get(TagController.list).post(TagController.store);
+router.route(`${PREFIX}/:id`).put(TagController.update).delete(TagController.destroy);
 
 export default router;

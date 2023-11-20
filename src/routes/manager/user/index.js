@@ -1,6 +1,6 @@
 import express from 'express';
 import passport from 'passport';
-import AuthController from '@/controllers/manager/AuthController';
+import userRoute from '@/routes/core/user';
 import { verifyToken } from '@/middlewares/auth';
 import UserController from '@/controllers/manager/UserController';
 
@@ -8,17 +8,11 @@ const router = express.Router();
 const PREFIX = '/user';
 
 // auth
-router.post('/register', AuthController.register);
-router.post('/login', AuthController.login);
-router.get('/check', verifyToken, passport.authenticate('jwt'), AuthController.check);
-router.get('/profile', verifyToken, passport.authenticate('jwt'), AuthController.profile);
-router.delete('/logout', verifyToken, passport.authenticate('jwt'), AuthController.logout);
-router.post('/change-password', verifyToken, passport.authenticate('jwt'), AuthController.changePassword);
+router.use(userRoute);
 
 // user
-router.get(`${PREFIX}`, verifyToken, passport.authenticate('jwt'), UserController.list);
-router.post(`${PREFIX}`, verifyToken, passport.authenticate('jwt'), UserController.store);
-router.put(`${PREFIX}/:id`, verifyToken, passport.authenticate('jwt'), UserController.update);
-router.delete(`${PREFIX}/:id`, verifyToken, passport.authenticate('jwt'), UserController.destroy);
+router.use('*', verifyToken, passport.authenticate('jwt'));
+router.route(`${PREFIX}`).get(UserController.list).post(UserController.store);
+router.route(`${PREFIX}/:id`).put(UserController.update).delete(UserController.destroy);
 
 export default router;

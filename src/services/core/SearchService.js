@@ -18,7 +18,7 @@ const SearchService = {
     return successResponse({ posts, tags, topics, authors });
   },
 
-  async searchPost({ limit = 3, keyword, page = 1 }) {
+  async searchPost({ limit = 6, keyword, page = 1 }) {
     const filters = {
       $or: [
         {

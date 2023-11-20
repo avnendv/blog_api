@@ -1,15 +1,19 @@
 import express from 'express';
 import passport from 'passport';
-import userRoute from '@/routes/manager/user';
+// import userRoute from '@/routes/manager/user';
 import AuthController from '@/controllers/core/AuthController';
+import { verifyToken } from '@/middlewares';
 
 const router = express.Router();
 
-router.get('/profile', AuthController.profile);
-router.post('/follow', AuthController.follow);
-
-// default use userRoute admin
-router.use(userRoute);
+// auth
+router.post('/register', AuthController.register);
+router.post('/login', AuthController.login);
+router.get('/check', verifyToken, passport.authenticate('jwt'), AuthController.check);
+router.get('/profile', verifyToken, passport.authenticate('jwt'), AuthController.profile);
+router.post('/follow', verifyToken, passport.authenticate('jwt'), AuthController.follow);
+router.delete('/logout', verifyToken, passport.authenticate('jwt'), AuthController.logout);
+router.post('/change-password', verifyToken, passport.authenticate('jwt'), AuthController.changePassword);
 
 // login social
 router.get(

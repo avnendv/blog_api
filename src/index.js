@@ -12,6 +12,6 @@ setupApp(app);
 connect();
 
 // faker
-faker(false);
+faker(true);
 
 app.listen(PORT, () => console.log(`Server is running at ${APP_URL}:${PORT}`));

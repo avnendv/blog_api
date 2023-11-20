@@ -1,14 +1,15 @@
 import { faker } from '@faker-js/faker';
-import { slugify } from '@/utils';
+import { calculateReadingTime, slugify } from '@/utils';
 
 export function createRandomPost() {
   const title = faker.internet.displayName();
+  const content = faker.lorem.lines({ min: 15, max: 150 });
   return {
     title,
     slug: slugify(title),
     thumbnail: faker.image.url(),
     description: faker.lorem.paragraph(2),
-    content: faker.lorem.lines({ min: 5, max: 15 }),
+    content,
     topic: [
       '654de5d79ec9e55794ddb518',
       '654de5f29ec9e55794ddb524',
@@ -29,6 +30,7 @@ export function createRandomPost() {
       '654debf6cfb8235529217c9e',
       '654debf6cfb8235529217c9f',
     ][Math.floor(Math.random() * 5)],
+    minRead: calculateReadingTime(content),
   };
 }
 

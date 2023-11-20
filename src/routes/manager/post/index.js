@@ -7,11 +7,8 @@ const router = express.Router();
 const PREFIX = '/post';
 
 router.use('*', verifyToken, passport.authenticate('jwt'));
-router.get(`${PREFIX}`, PostController.list);
+router.route(`${PREFIX}`).get(PostController.list).post(PostController.store);
+router.route(`${PREFIX}/:id`).get(PostController.show).put(PostController.update).delete(PostController.destroy);
 router.get(`${PREFIX}/series`, PostController.series);
-router.get(`${PREFIX}/:id`, PostController.show);
-router.post(`${PREFIX}`, PostController.store);
-router.put(`${PREFIX}/:id`, PostController.update);
-router.delete(`${PREFIX}/:id`, PostController.destroy);
 
 export default router;

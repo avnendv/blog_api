@@ -29,11 +29,11 @@ export default function (passport) {
               githubId: info.sub,
             }
           : {
-              userName: info.email ? String(info.email.split('@')[0] + uuid) : String(uuid),
-              email: info.email,
+              userName: info.login ? String(info.login.split('@')[0] + uuid) : String(uuid),
+              email: info.email || String(uuid),
               avatar: info.avatar_url,
               githubId: info.sub,
-              fullName: info.name,
+              fullName: info.name || String(uuid),
               authType: AUTH_TYPE.SOCIAL,
             };
         const user = await User.findOneAndUpdate(filter, condition, { upsert: true, new: true });
