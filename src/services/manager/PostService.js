@@ -25,8 +25,10 @@ const PostService = {
 
     const [posts, totalDocs] = await Promise.all([
       Post.find(filters)
+        .skip((parseInt(page) - 1) * parseInt(limit))
+        .limit(parseInt(limit))
         .sort({ isShowTop: -1 })
-        .select('title thumbnail description publish status updatedAt')
+        .select('title thumbnail description publish status isShowTop isApproved updatedAt')
         .populate('topic', 'title')
         .populate('series', 'title')
         .populate({
@@ -149,6 +151,10 @@ const PostService = {
         if (!series) throw new ApiError('Series not exists!');
       }
     }
+  },
+  async toggleApproved(id) {
+    const post = await Post.findByIdAndUpdate(id, { isApproved: true }, { new: true });
+    return successResponse(post.toResource());
   },
 };
 

@@ -46,6 +46,10 @@ const Post = new Schema(
       type: Number,
       default: POST_TYPE.POST,
     },
+    isApproved: {
+      type: Boolean,
+      default: false,
+    },
     tag: [{ type: String, ref: 'tag', field: 'name' }],
     topic: { type: Schema.Types.ObjectId, ref: 'topic', required: true },
     status: {
@@ -85,7 +89,7 @@ Post.methods.toResource = function () {
   };
 };
 
-Post.statics.findTrending = function ({ limit = 3, filters = {} }) {
+Post.statics.findTrending = function ({ limit = 3, filters = { isApproved: true } }) {
   return this.find(filters)
     .sort({ viewed: -1 })
     .sort({ isShowTop: -1 })

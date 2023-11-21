@@ -8,7 +8,12 @@ const PREFIX = '/post';
 
 router.use('*', verifyToken, passport.authenticate('jwt'));
 router.route(`${PREFIX}`).get(PostController.list).post(PostController.store);
-router.route(`${PREFIX}/:id`).get(PostController.show).put(PostController.update).delete(PostController.destroy);
+router
+  .route(`${PREFIX}/:id`)
+  .get(PostController.show)
+  .patch(PostController.toggleApproved)
+  .put(PostController.update)
+  .delete(PostController.destroy);
 router.get(`${PREFIX}/series`, PostController.series);
 
 export default router;

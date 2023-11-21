@@ -9,8 +9,8 @@ const router = (app) => {
 
   app.get('/', HelloWorldController);
 
-  app.use(`${v1Prefix}`, ClientRouter);
   app.use(`${v1Prefix}/admin`, ManagerRouter);
+  app.use(`${v1Prefix}`, ClientRouter);
 
   // handle 404 not found route
   app.use(notfoundHandle);

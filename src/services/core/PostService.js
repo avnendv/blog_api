@@ -4,17 +4,15 @@ import Tag from '@/models/Tag';
 import Topic from '@/models/Topic';
 import User from '@/models/User';
 import { limitExc, successResponse } from '@/utils';
-import ApiError from '@/utils/ApiError';
 
 const PostService = {
   async show(slug) {
-    const post = await Post.findOne({ slug })
+    const post = await Post.findOne({ slug, isApproved: true })
       .select('-isShowTop -status -publish -attr')
       .populate('author', 'avatar fullName')
       .populate('topic', 'title slug')
       .populate('series', 'title');
 
-    if (!post) throw new ApiError('Data not found!');
     Post.upView({ slug });
 
     return successResponse(post);
@@ -49,11 +47,11 @@ const PostService = {
   async postNewest({ limit = 6, page = 1 }) {
     const order = { isShowTop: -1 };
 
-    return successResponse(...(await this.postList({ order, limit, page })));
+    return successResponse(...(await this.postList({ order, limit, page, filters: { isApproved: true } })));
   },
   async listPostByTag({ tag, limit = 6, page = 1 }) {
     const regex = { $regex: tag, $options: 'i' };
-    const filters = { tag: regex };
+    const filters = { tag: regex, isApproved: true };
     const otherHandle = Tag.findOne({ name: regex }).select('-_id name description');
 
     const [posts, pagination, tagInfo] = await this.postList({ filters, limit, page, otherHandle });
@@ -80,6 +78,7 @@ const PostService = {
       {
         $match: {
           'topic.slug': keyword,
+          isApproved: true,
         },
       },
     ];
@@ -146,7 +145,7 @@ const PostService = {
     return successResponse({ topic, posts }, pagination);
   },
   async listPostByAuthor({ author: keyword, limit = 6, page = 1 }) {
-    const filters = { author: keyword };
+    const filters = { author: keyword, isApproved: true };
 
     const limitReal = limitExc(limit);
 
@@ -173,7 +172,7 @@ const PostService = {
   },
   async series({ limit = 12, page = 1 }) {
     const limitReal = limitExc(limit);
-    const filters = { postType: POST_TYPE.SERIES };
+    const filters = { postType: POST_TYPE.SERIES, isApproved: true };
 
     const [data, totalDocs] = await Promise.all([
       Post.find(filters)
@@ -195,7 +194,9 @@ const PostService = {
     return successResponse(data, pagination);
   },
   async postSeries(id) {
-    const postSeries = await Post.find({ postType: POST_TYPE.POST_SERIES, series: id }).select('title slug -_id');
+    const postSeries = await Post.find({ postType: POST_TYPE.POST_SERIES, series: id, isApproved: true }).select(
+      'title slug -_id'
+    );
 
     return successResponse(postSeries);
   },

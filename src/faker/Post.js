@@ -21,6 +21,7 @@ export function createRandomPost() {
       Math.floor(Math.random() * 3)
     ],
     isShowTop: [false, true][Math.floor(Math.random() * 2)],
+    isApproved: [false, true][Math.floor(Math.random() * 2)],
     status: 1,
     publish: 1,
     author: [

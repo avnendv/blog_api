@@ -63,6 +63,17 @@ const PostController = {
       next(error);
     }
   },
+  async toggleApproved(req, res, next) {
+    try {
+      const { id } = req.params;
+
+      const data = await PostService.toggleApproved(id);
+
+      return res.json(data);
+    } catch (error) {
+      next(error);
+    }
+  },
 };
 
 export default PostController;
