@@ -1,6 +1,24 @@
 import PostService from '@/services/core/PostService';
 
 const PostController = {
+  async series(req, res, next) {
+    try {
+      const data = await PostService.series(req.query);
+      return res.json(data);
+    } catch (error) {
+      next(error);
+    }
+  },
+  async postSeries(req, res, next) {
+    try {
+      const { id } = req.params;
+
+      const data = await PostService.postSeries(id);
+      return res.json(data);
+    } catch (error) {
+      next(error);
+    }
+  },
   async show(req, res, next) {
     try {
       const { slug } = req.params;

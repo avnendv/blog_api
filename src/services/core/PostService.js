@@ -1,3 +1,4 @@
+import { POST_TYPE } from '@/config/constants';
 import Post from '@/models/Post';
 import Tag from '@/models/Tag';
 import Topic from '@/models/Topic';
@@ -157,7 +158,7 @@ const PostService = {
         .limit(limitReal)
         .select('title slug thumbnail minRead tag updatedAt -_id')
         .populate('author', 'avatar fullName'),
-      await User.findById(keyword).select('avatar fullName'),
+      User.findById(keyword).select('avatar fullName'),
       Post.countDocuments(filters),
     ]);
 
@@ -169,6 +170,34 @@ const PostService = {
     };
 
     return successResponse({ trending, posts, author }, pagination);
+  },
+  async series({ limit = 12, page = 1 }) {
+    const limitReal = limitExc(limit);
+    const filters = { postType: POST_TYPE.SERIES };
+
+    const [data, totalDocs] = await Promise.all([
+      Post.find(filters)
+        .sort({ updatedAt: -1 })
+        .skip((parseInt(page) - 1) * parseInt(limitReal))
+        .limit(limitReal)
+        .select('title slug thumbnail minRead tag updatedAt -_id')
+        .populate('author', 'avatar fullName'),
+      Post.countDocuments(filters),
+    ]);
+
+    const pagination = {
+      limit: limitReal,
+      page,
+      total: totalDocs,
+      pages: Math.ceil(totalDocs / limitReal),
+    };
+
+    return successResponse(data, pagination);
+  },
+  async postSeries(id) {
+    const postSeries = await Post.find({ postType: POST_TYPE.POST_SERIES, series: id }).select('title slug -_id');
+
+    return successResponse(postSeries);
   },
 };
 

@@ -11,6 +11,8 @@ const PREFIX_TOPIC = '/topics';
 const PREFIX_AUTHOR = '/author';
 
 router.get(`${PREFIX}/trending`, PostController.postTrending);
+router.get(`${PREFIX}/series`, PostController.series);
+router.get(`${PREFIX}/series/:id`, PostController.postSeries);
 router.get(`${PREFIX}/newest`, PostController.postNewest);
 router.get(`${PREFIX}/:id/info`, verifyToken, passport.authenticate('jwt'), PostInfoController.info);
 router.patch(`${PREFIX}/:id/mark`, verifyToken, passport.authenticate('jwt'), PostInfoController.mark);
