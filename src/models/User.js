@@ -26,6 +26,8 @@ const User = new Schema(
     },
     birthday: Date,
     avatar: String,
+    bio: String,
+    company: String,
     phone: {
       type: String,
       trim: true,

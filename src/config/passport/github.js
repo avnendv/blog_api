@@ -22,7 +22,7 @@ export default function (passport) {
         };
 
         const userExisting = await User.exists(filter);
-        const uuid = uuidv4();
+        const uuid = uuidv4().split('-')[0];
 
         const condition = userExisting
           ? {

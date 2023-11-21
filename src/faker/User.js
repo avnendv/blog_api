@@ -10,6 +10,7 @@ const defaultUser = {
   phone: '0124334124',
   address: 'Nam Định',
   avatar: faker.image.avatar(),
+  bio: faker.lorem.lines({ min: 10, max: 15 }),
 };
 
 export function createRandomUser() {
@@ -23,6 +24,7 @@ export function createRandomUser() {
     address: faker.location.city(),
     birthday: faker.date.birthdate(),
     gender: Math.floor(Math.random() * 2),
+    bio: faker.lorem.lines({ min: 10, max: 15 }),
   };
 }
 

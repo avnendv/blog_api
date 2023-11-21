@@ -1,4 +1,6 @@
 import Post from '@/models/Post';
+import User from '@/models/User';
+import UserProfile from '@/models/UserProfile';
 // import PostInfo from '@/models/PostInfo';
 import { limitExc, successResponse } from '@/utils';
 
@@ -56,6 +58,18 @@ import { limitExc, successResponse } from '@/utils';
 // ]);
 
 const AccountService = {
+  async personal(userId) {
+    const user = await User.findById(userId).select('userName bio fullName birthday phone avatar email gender address');
+
+    return successResponse(user);
+  },
+  async social(userId) {
+    const userProfile = await UserProfile.findOne({ user: userId }).select(
+      'url googleUrl facebookUrl githubUrl socialOther1 socialOther2 socialOther3'
+    );
+
+    return successResponse(userProfile);
+  },
   async bookmark({ userId, limit = 12, page = 1 }) {
     const limitReal = limitExc(limit);
 

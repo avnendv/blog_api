@@ -28,7 +28,7 @@ export default function (passport) {
               googleId: info.sub,
             }
           : {
-              userName: info.email.split('@')[0] + uuidv4(),
+              userName: info.email.split('@')[0] + uuidv4().split('-')[0],
               email: info.email,
               avatar: info.picture,
               googleId: info.sub,
