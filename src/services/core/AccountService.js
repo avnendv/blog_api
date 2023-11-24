@@ -80,13 +80,11 @@ const AccountService = {
           localField: '_id',
           foreignField: 'post',
           as: 'postInfo',
-          pipeline: [
-            {
-              $match: {
-                'postinfos.user': userId,
-              },
-            },
-          ],
+        },
+      },
+      {
+        $match: {
+          'postInfo.user': userId,
         },
       },
       {
