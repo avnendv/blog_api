@@ -13,7 +13,7 @@ export default function (passport) {
     new Strategy(opts, async function (jwtPayload, done) {
       try {
         const user = await User.findById(jwtPayload._id);
-        if (!user) throw new ApiError('User not found');
+        if (!user) throw new ApiError('Authentication Error!');
 
         done(null, { ...user.toResource() });
       } catch (error) {

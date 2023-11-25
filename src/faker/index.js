@@ -5,7 +5,7 @@ import Post from '@/models/Post';
 import '@/config/discord';
 
 export default async (isFaker) => {
-  if (isFaker) {
+  if (+isFaker) {
     // await User.insertMany(USERS);
     await Post.insertMany(POSTS);
   }

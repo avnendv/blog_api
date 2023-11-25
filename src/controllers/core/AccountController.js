@@ -25,6 +25,22 @@ const AccountController = {
       next(error);
     }
   },
+  async listPost(req, res, next) {
+    try {
+      const data = await AccountService.listPost({ userId: req.user._id, ...req.query });
+      return res.json(data);
+    } catch (error) {
+      next(error);
+    }
+  },
+  async togglePublish(req, res, next) {
+    try {
+      const data = await AccountService.togglePublish({ author: req.user._id, id: req.params.id, ...req.body });
+      return res.json(data);
+    } catch (error) {
+      next(error);
+    }
+  },
 };
 
 export default AccountController;

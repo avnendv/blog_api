@@ -25,9 +25,9 @@ const PostService = {
 
     const [posts, totalDocs] = await Promise.all([
       Post.find(filters)
+        .sort({ isShowTop: -1, updatedAt: -1 })
         .skip((parseInt(page) - 1) * parseInt(limit))
         .limit(parseInt(limit))
-        .sort({ isShowTop: -1 })
         .select('title thumbnail description publish status isShowTop isApproved updatedAt')
         .populate('topic', 'title')
         .populate('series', 'title')

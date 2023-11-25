@@ -1,3 +1,4 @@
+import { PER_PAGE } from '@/config/constants';
 import Post from '@/models/Post';
 import User from '@/models/User';
 import UserProfile from '@/models/UserProfile';
@@ -152,6 +153,27 @@ const AccountService = {
     };
 
     return successResponse(postBookmark, pagination);
+  },
+  async listPost({ limit = PER_PAGE, page = 1, userId: author, publish }) {
+    const [posts, totalDocs] = await Promise.all([
+      Post.find({ author, publish })
+        .skip((parseInt(page) - 1) * parseInt(limit))
+        .limit(parseInt(limit))
+        .sort({ isShowTop: -1 })
+        .select('title slug tag publish isApproved updatedAt')
+        .populate('topic', 'title slug'),
+      Post.countDocuments({ author, publish }),
+    ]);
+
+    const pagination = { limit, page, total: totalDocs, pages: Math.ceil(totalDocs / limit) };
+
+    return successResponse(posts, pagination);
+  },
+  async togglePublish({ id, publish, author }) {
+    console.log(111);
+    await Post.findOneAndUpdate({ _id: id, author }, { publish: +publish });
+
+    return successResponse();
   },
 };
 
