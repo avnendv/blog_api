@@ -23,6 +23,7 @@ export const DISCORD_REFRESH_TOKEN_BOT =
 export const DISCORD_CHANNEL_ID_DEV = process.env.DISCORD_CHANNEL_ID_DEV || '1174617731862106132';
 export const DISCORD_CHANNEL_ID_PROD = process.env.DISCORD_CHANNEL_ID_PROD || '1174617731862106132';
 export const WHITELIST_DOMAINS_URL = process.env.WHITELIST_DOMAINS_URL || '';
+export const IS_FAKER = process.env.IS_FAKER || false;
 
 export const env = {
   APP_URL,
@@ -41,4 +42,5 @@ export const env = {
   GITHUB_CLIENT_SECRET,
   DISCORD_REFRESH_TOKEN_BOT,
   DISCORD_CHANNEL_ID_DEV,
+  IS_FAKER,
 };
