@@ -17,7 +17,16 @@ const obj = {
     .valid(...Object.values(POST_TYPE)),
   tag: Joi.array(),
   topic: Joi.string().trim(),
-  series: Joi.string().trim(),
+  series: Joi.when('postType', [
+    {
+      is: POST_TYPE.POST_SERIES,
+      then: Joi.string().required().trim(),
+    },
+    {
+      is: `${POST_TYPE.POST_SERIES}`,
+      then: Joi.string().required().trim(),
+    },
+  ]),
 };
 
 export const storeRequest = (data) => {
