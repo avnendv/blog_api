@@ -10,8 +10,11 @@ const MAX_CONNECT_RETRY = 3;
 
 export async function connect(connectCount = 0) {
   try {
-    const URL = MONGO_USER && MONGODB_PASSWORD && MONGO_HOST ?  `mongodb://${MONGO_USER}:${MONGODB_PASSWORD}@${MONGO_HOST}:${MONGODB_PORT}/?retryWrites=true&w=majority` : MONGO_URL;
-    
+    const URL =
+      MONGO_USER && MONGODB_PASSWORD && MONGO_HOST
+        ? `mongodb://${MONGO_USER}:${MONGODB_PASSWORD}@${MONGO_HOST}:${MONGODB_PORT}/?retryWrites=true&w=majority`
+        : MONGO_URL;
+
     const options = {
       dbName: MONGO_DB_NAME,
       minPoolSize: 10,
@@ -38,7 +41,7 @@ export async function connect(connectCount = 0) {
     }
     return response;
   } catch (e) {
-    console.error('DB::: connect failure!',e);
+    console.error('DB::: connect failure!', e);
 
     // retry connect db when connect fail
     if (connectCount < MAX_CONNECT_RETRY) {
